@@ -1,3 +1,3 @@
 # proyecto3x1
 # Proyecto de Aplicaciones Web. 
-# Nahia Aranbarri, Ionuts Gornoava & Andoni Cascan.
+# Nahia Aranbarri, Ionuț Gornoava & Andoni Cascan.

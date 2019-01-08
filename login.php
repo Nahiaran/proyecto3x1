@@ -10,9 +10,9 @@ $user_password = $_POST["user_password"];
 
 //conect to mysql (TABLA:users, COLUMNAS:name/password)
 
-$servername = "localhost";
+$servername = "localhost:3307";
 $username = "root";
-$password = "root";
+$password = "";
 $db = "web";
 // Create connection
 $conn = mysqli_connect($servername, $username, $password, $db);
@@ -24,7 +24,7 @@ if (!$conn) {
 //echo "YAS";
 
 // select from user where ....
-$query = "SELECT name FROM users WHERE name='$user' AND password='$user_password'";
+$query = "SELECT user FROM users WHERE user='$user' AND user_password='$user_password'";
 //$query = "SELECT * FROM users WHERE user='$user' AND password='$user_password'";
 //echo $query;
 
@@ -32,11 +32,12 @@ $result = mysqli_query($conn, $query);
 /* numeric array */
 
 $row = mysqli_fetch_array($result, MYSQLI_NUM);
-echo $row[0];
+//echo $row[0];
 //printf ("%s (%s)\n", $row[0], $row[1]);
 // if ok go to loginok.html
-if ($row) {
-    echo "Login OK";
+ if ($row) {
+    header('Location: '."loginok.html");
+    //echo "Login OK";
     // session
     $_SESSION['user'] = $user;
 } else {

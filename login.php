@@ -36,7 +36,7 @@ $row = mysqli_fetch_array($result, MYSQLI_NUM);
 //printf ("%s (%s)\n", $row[0], $row[1]);
 // if ok go to loginok.html
  if ($row) {
-    header('Location: '."loginok.html");
+    header('Location: '."home.html");
     //echo "Login OK";
     // session
     $_SESSION['user'] = $user;

@@ -1,0 +1,2715 @@
+                                // HUNDIR LA FLOTA  (C++)
+
+// Por Jose Manuel Caneda Mosquera - JMC (2004 marzo)
+
+//  josecan2001@yahoo.com
+
+//
+
+// Inicio: 03-03-2004
+
+// Fin   : 23-03-2004 (22:48)
+
+// Ultima modificaci¢n :   25-03-2004
+
+//
+
+//
+
+//El juego se basa mas o menos en varias normas que son:
+
+//
+
+// -Se juega en una matriz de 10x10
+
+//
+
+// -Se juega con 5 barcos. Uno de 2 casillas
+
+//                                                                 Dos de 3 casillas
+
+//                                                                 Uno de 4 casillas
+
+//                                                                 Uno de 5 casillas
+
+//
+
+// -Los barcos colocados, nunca pueden estar pegados (esto me lo han dicho
+
+//  algunas personas y no lo entiendo,porque de esa forma es mas facil
+
+//  que pierdas).
+
+//
+
+// -El jugador que acierta barco sigue tirando.
+
+//
+
+//
+
+//  De alterar cualquiera de estas normas el juego no funcionaria bien
+
+//  y habria que retocarlo seguramente por muchas partes
+
+//
+
+//
+
+//Para jugar asi, sorteo los barco en una matriz de 10x10 aunque reservo
+
+//sitio de 15x15 porque en determinados calculos me voy fuera del rango
+
+//y eso en C trae consecuencias no deseadas (como escribir datos en otra
+
+//matriz que no debo :) ...)
+
+//El barco de tipo 2 lo pongo escribiendo dicho numero en la matriz
+
+//El tres, cuatro y cinco idem, y como hay otro de 3 lo cambio por el 6
+
+//
+
+//
+
+//ejemplo
+
+//                                       022000000
+
+//                                       000000666
+
+//                                       000500000
+
+//                                       000500000
+
+//                                       300500000
+
+//                                       300500000
+
+//                                       300500000
+
+//                                       000000000
+
+//                                       000000000
+
+//                                       000044440
+
+//
+
+//
+
+//
+
+//A pesar de lo pesado que pueda parecer el codigo, con tantas funciones,
+
+//llamadas, tantos "for" recorriendo matrices, el juego lo he probado en un
+
+//286 a 12 Mhz con 3 megas de RAM y va sobradito.
+
+//De todos modos, seguro que se puede optimizar muucho, asi que si algui‚n
+
+//lo hace, admito una copia en mi mail :)
+
+//
+
+//
+
+//
+
+//COMO COMPILARLO???
+
+//No necesita ninguna libreria *.h, ni ningun otro archivo que no dispongais
+
+//ya de el. Asi que simplemente debeis poner el archivo "egavga.bgi" en la misma
+
+//ruta y el "LITT.CHR" para poder ver letra grande como fue dise¤ado
+
+//Compilado con Borland C++ 3.1 para Dos debe funcionar correctamente.
+
+
+
+#include <stdio.h>
+
+#include <conio.h>
+
+#include <dos.h>
+
+#include <stdlib.h>
+
+#include <string.h>
+
+#include <graphics.h>
+
+
+
+#define COLOR1 12          //colores que se usan (modificar desde aqui ya cambia todo)
+
+#define COLOR2 9
+
+
+
+#define UN_SEGUNDO   1000  //definicion de tiempos de espera (para que se vea lo que pasa)
+
+#define DOS_SEGUNDOS 2000  //cuando disparamos o dispara la maquina
+
+
+
+
+
+//diferentes cadenas que se usan
+
+
+
+char titulo[] ="HUNDIR LA FLOTA";
+
+char autor[] ="Por JMC              ";
+
+char ano[] ="              marzo 2004 v 1.0";
+
+
+
+// el dedicado[] es por un reto personal a un amigo
+
+char dedicado[] ="Lamparillas : feito desde 0. pa que vexas";
+
+
+
+char info1[] ="pulse  R  para jugar con color ROJO";
+
+char info2[] ="pulse  A  para jugar con color AZUL";
+
+char info3[] ="pulse ESC para SALIR";
+
+
+
+char info4[] ="TOCADO";
+
+char info5[] ="AGUA";
+
+char info6[] ="HUNDIDO";
+
+
+
+char info7[] ="TU GANAS!!!!";
+
+char info8[] ="TU PIERDES!!!!";
+
+char info9[] ="pulsa una tecla...";
+
+
+
+char info10[] ="TURNO 1 DISPARE";
+
+char info11[] ="TURNO 2 ESPERE";
+
+
+
+char info12[] ="Pulse ESPACIO para sortear los barcos";
+
+char info13[] ="Pulse ENTER  para empezar a jugar";
+
+char info14[] ="Pulse ESC para salir al menu";
+
+
+
+char info15[] ="Colocando barcos. Espere";
+
+
+
+
+
+
+
+// variables globales, para consultarlar/actualizarlas desde todas
+
+// las funciones
+
+
+
+int paleto=0; //para el efecto visual
+
+int retardo=30; //para retado del efecto
+
+int color1=7;  // colores de juego 1
+
+int color2=7;  // colores de juego 1
+
+int estado=0;  //estado de la partida (0 es que no se juega)
+
+int salir=0;   //usado en muchas funciones para salir de bucles
+
+int teclado=0; //lectura de teclado
+
+int terminar=0; //usado para muchas funciones para salir de bucles/programas
+
+int cuadro1[15][15]; //cuadro que contiene los barcos del jugador 1
+
+int cuadro2[15][15]; //cuadro que contiene los barcos del jugador 2
+
+int cuadro3[15][15]; //cuadro para hacer backup del cuadro1 (para chivato unicamente);
+
+int cuadro4[15][15]; //cuadro para hacer backup del cuadro2 (para chivato unicamente);
+
+int temporal1[15][15]; //cuadro de disparos reales al cuadro 1
+
+int temporal2[15][15]; //cuadro de disparos reales al cuadro 2
+
+int ojo[15][15]; //cuadro de aciertos en cuadro1 ( lo usa la inteligencia)
+
+int cuenta1[15][15]; //cuadro que guarda cual es el barco mas grande que coje en esa casilla
+
+int general1=0; //proposito general 1, idem 2
+
+int general2=0;
+
+int ganador=3; //ganador. 3 es nadie. 1 es el jugador 1 y 2... eso
+
+int tocado1_busca; // variable que coje el tipo de barco tocado... que se busca... esto creo que no lo uso ya
+
+
+
+
+
+
+
+
+
+
+
+
+
+// funciones magicas :)
+
+
+
+
+
+void presenta(void); //funcion que escribe la pantalla principal , ayudada de otras
+
+int modografico(void); //inicia modo grafico a 640x480 y 16 colores
+
+void cuadricula1(void); //dibuja las dos cuadriculas y los numeros y letras
+
+void cuadricula_a(void); //dibuja el cuadro a (1) y es util para borrar
+
+void cuadricula_b(void); //dibuja el cuadro b (2)
+
+void frame(void); //funcion que cambia el un color todo el tiempo (el 15, creando un efecto)
+
+int tecla(void); //lee tecla, y es capaz de devolvernos combinaciones, si se quieren usar
+
+void jugar(void); //funcion dode se deciden los turnos y las coordenadas. principal amos!
+
+
+
+
+
+//para usar 3 las siguientes funciones, deben estar las matrices cuadro1 y cuadro2 con los barco ya
+
+// sorteados. estas funciones simplemente reflejan esas matrices graficamente
+
+
+
+void colocar1(void); //realiza el sorteo de los barcos (indispensable)
+
+void dibujabarcos(int cuadro); //todos los de cuadricula "cuadro"
+
+void dibujabarco(int cuadro,int tipo);//especifica cuadricula y tipo : 2 ,3 ,4, 5 o 6
+
+void barco(int posix,int posiy,int cuadro,int tipo, int horver); //dibuja el barco en las coordenadas marcadas
+
+                                                                                                                                                                         //en el cuadro marcado, y en la posicion
+
+                                                                                                                                                                         // (horizontal/vertical) marcada
+
+
+
+void aleatorio(int cuadro,int barco); // sortea los barcos en el tablero. Le decimos el tipo de barco
+
+                                                                                                        // y en que cuadro queremos que lo ponga
+
+
+
+int prueba_aleatorio(int cuadro); //con esta funcion comprobamos que no hay barcos pegados... y!!!
+
+                                                                                         // es necesaria que trabaje para que no se cuelgue la funcion de la
+
+                                                                                         // inteligencia (ya que tiene en cuenta tmb esa norma)
+
+
+
+void colocatexto(int color,int tamanho,int posiy,char textoa[]); //diferentes modos de colocar texto
+
+void colocatexto1(int color,int tamanho,int posiy,char textoa[]); //este ademas borra el solo antes de poner algo
+
+void colocatexto2(int color,int tamanho,int posix,int posiy,char textoa[]);
+
+void coloca_texto_maquina(int x,int y); //solo sirve para cantar las coordenadas que nos elije la maquina (por problemas)
+
+
+
+void disparo(int x,int y, int cuadricula); //ejecuta un disparo que cambia de color solo si hay o no barco en la cuadricula
+
+void ganadorchek(); //comprueba el ganador
+
+void chivato();     // usada para depurar en un principio y dejada para truco
+
+void inteligente(); // este es el cerebro de la bestia (lo hace bastante bien creo y SIN TRAMPAS, palabra)
+
+void llenavacio();  //utiliza la matriz cuenta1[15][15] y escribe en cada posicion el barco mas grande que cojeria
+
+                                                        //comprobando en horizontal y vertical los disparos que estan hechos (muuuuy util)
+
+int maximo();  //barco mas pequeño que hay en pie (tamaño, no tipo)
+
+int minimo();  //barco mas grande que existe. (creo que no la llego a usar nunca, pero funciona igual)
+
+void numeroen(int x,int y,int numero,int cuadro); //escribe numeros por coordenadas en el cuadro elejido
+
+                                                                                                                                        //usado para depurar y ahora desde el chivato()
+
+void borradialogo (void); //borra toda la zona de dialogo
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//principal
+
+
+
+
+
+int main(void)
+
+{
+
+        modografico();
+
+        while(!terminar)
+
+                {
+
+                presenta();
+
+                if(!terminar){jugar();}
+
+                }
+
+
+
+        closegraph();
+
+return 0;
+
+}
+
+
+
+// finalizado
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//funciones definidas que se usan :
+
+
+
+
+
+
+
+
+
+int modografico() //arrancar modo grafico a 640x480
+
+{                // se asume que el archivo egavga.bgi esta en la mismo ruta
+
+int driver=0, modo=1;
+
+initgraph(&driver,&modo,"");
+
+delay(1500);
+
+return 0;
+
+}
+
+
+
+
+
+
+
+// funcion de presentacion
+
+// basicamente hace una "limpieza" de pantalla
+
+// y coloca casi todos los textos
+
+
+
+void presenta(void)
+
+{
+
+cleardevice();
+
+
+
+colocatexto2(10,9,320,5,titulo);
+
+colocatexto2(15,9,322,7,titulo);
+
+colocatexto2(9,9,324,9,titulo);
+
+colocatexto(9,5,50,autor);
+
+colocatexto(2,5,50,ano);
+
+colocatexto(15,5,460,dedicado);
+
+colocatexto(14,5,400,info1);
+
+colocatexto(14,5,415,info2);
+
+colocatexto(14,5,430,info3);
+
+
+
+setcolor(9);
+
+rectangle(0,0,639,479);
+
+rectangle(2,70,637,395);
+
+estado=0;
+
+
+
+if (estado==1){color1=COLOR1;color2=COLOR2;}
+
+if (estado==2){color1=COLOR2;color2=COLOR1;}
+
+if (estado==0){color1=7;color2=7;}
+
+cuadricula1();    // con color gris
+
+
+
+
+
+
+
+delay(500);
+
+salir=0;
+
+
+
+while(!salir) //primera eleccion : color o salir
+
+        {
+
+
+
+        if (kbhit())
+
+                 {
+
+                 teclado=tecla();
+
+                 if (teclado==27 ){estado=0;salir=1;terminar=1;}
+
+                 if (teclado==114 || teclado==82 ){estado=1;salir=1;}
+
+                 if (teclado==97 || teclado==65){estado=2;salir=1;}
+
+                 }
+
+
+
+        frame();
+
+        }
+
+
+
+
+
+if (estado==1){color1=COLOR1;color2=COLOR2;}
+
+if (estado==2){color1=COLOR2;color2=COLOR1;}
+
+if (estado==0){color1=7;color2=7;}
+
+cuadricula1(); // con colores elejidos ahora
+
+}
+
+
+
+
+
+
+
+
+
+
+
+void cuadricula1(void) //general. dibuja las dos cuadriculas y las coordenadas
+
+{
+
+        int x;
+
+        char numero[2];
+
+
+
+cuadricula_a();
+
+cuadricula_b();
+
+
+
+settextstyle(2,0,5);
+
+setcolor(9);
+
+         // dibujamos numeros y letras
+
+        for(x=1;x<=10;x++)
+
+                {
+
+                sprintf(numero, "%c", x+64);
+
+                outtextxy(14,80+(x*27),numero);
+
+                outtextxy(319,80+(x*27),numero);
+
+                outtextxy(620,80+(x*27),numero);
+
+                sprintf(numero, "%d", x);
+
+                outtextxy((x*27)+12,80,numero);
+
+                outtextxy((x*27)+319,80,numero);
+
+                outtextxy((x*27)+12,372,numero);
+
+                outtextxy((x*27)+319,372,numero);
+
+                }
+
+
+
+}
+
+
+
+
+
+
+
+
+
+void cuadricula_a(void) //borra la cuadricula a. sin barcos
+
+{
+
+        int x,y,ancho=27;
+
+        setcolor(color1);
+
+        for(x=0;x<=9;x++){
+
+        for(y=0;y<=9;y++){
+
+        rectangle(30+x*ancho,99+(y*ancho),30+(x*ancho)+ancho,99+(y*ancho)+ancho);
+
+        setfillstyle(1, 3);
+
+        bar(31+x*ancho,100+(y*ancho),29+(x*ancho)+ancho,98+(y*ancho)+ancho);
+
+                }
+
+                }
+
+}
+
+
+
+
+
+
+
+
+
+
+
+void cuadricula_b(void) //borra visualmente la cuadricula b . no dibuja los barcos
+
+{
+
+        int x,y,ancho=27;
+
+        setcolor(color2);
+
+        for(x=0;x<=9;x++){
+
+        for(y=0;y<=9;y++){
+
+        rectangle(338+x*ancho,99+(y*ancho),338+(x*ancho)+ancho,99+(y*ancho)+ancho);
+
+        setfillstyle(1, 3);
+
+        bar(339+x*ancho,100+(y*ancho),337+(x*ancho)+ancho,98+(y*ancho)+ancho);
+
+                }
+
+                }
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+void frame(void) //funcion que se llama en todo momento, crea el fundido con el color 15
+
+{                // asi que todo lo que lleve este color queda con el efecto siempre
+
+struct palettetype pal;
+
+getpalette(&pal);
+
+paleto++;
+
+if (paleto>= 256) paleto=0;
+
+setrgbpalette(pal.colors[15],paleto*2,paleto*2,paleto*2);
+
+delay(retardo);
+
+}
+
+
+
+
+
+
+
+
+
+//leer teclado (includidas conbinaciones tipo CTRL+ ... )
+
+int tecla(void)
+
+{
+
+        int t=0,t2=0;
+
+         if(kbhit())
+
+         { t=getch();
+
+         if (t==0){
+
+         t2 = getch();
+
+         t2<<=8;
+
+         t2|=t;
+
+         return(t2);}
+
+         else
+
+         return(t);}
+
+return 0;
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+void colocar1(void)  //colocar barcos
+
+{
+
+
+
+int x,y,bueno=0;
+
+randomize();
+
+
+
+
+
+while(!bueno){
+
+for (x=0;x<=9;x++){for(y=0;y<=9;y++){cuadro1[x][y]=0;}}
+
+frame();
+
+aleatorio(1,2);
+
+aleatorio(1,3);
+
+aleatorio(1,6); //segundo barco de 3
+
+aleatorio(1,4);
+
+aleatorio(1,5);
+
+bueno=prueba_aleatorio(1); //comprobar que non hai barcos pegados
+
+} // usar prueba_aleatorio hace que el calculo de barcos sea un poco lento, pero
+
+        // es la unica manera de que la inteligencia funcione bien
+
+
+
+
+
+bueno=0;
+
+while(!bueno){
+
+for (x=0;x<=9;x++){for(y=0;y<=9;y++){cuadro2[x][y]=0;}}
+
+frame();
+
+aleatorio(2,2);
+
+aleatorio(2,3);
+
+aleatorio(2,6); //segundo barco de 3
+
+aleatorio(2,4);
+
+aleatorio(2,5);
+
+bueno=prueba_aleatorio(2); //comprobar que non hai barcos pegados
+
+}
+
+
+
+
+
+}
+
+
+
+
+
+
+
+// funcion de juego
+
+
+
+void jugar(void)
+
+{
+
+int sorteo=1,hecho=0,turno,conta1=0,conta2=0;;
+
+int myx,myy;
+
+int x,y,contador_turnos;
+
+char yletra[1],xnumero[2];
+
+char mostrar[60];
+
+
+
+salir=0;
+
+
+
+while(!hecho)
+
+{
+
+
+
+frame();
+
+
+
+                if(sorteo)
+
+                        {
+
+                        sorteo=0;
+
+                        borradialogo();
+
+                        colocatexto(14,5,415,info15); //informar de que se estan colocando los barcos
+
+                        cuadricula_a();
+
+                        cuadricula_b();
+
+                        colocar1(); // se colocan en la matriz los barcos. se sortean vamos
+
+
+
+                        dibujabarcos(1); //delatar nuestros barcos  (normal)
+
+                //      dibujabarcos(2); //delatar posicion enemiga (trampa)
+
+
+
+                        borradialogo();
+
+                        colocatexto(14,5,415,info13);  //informar de que se acabo y hay opciones
+
+                        colocatexto(14,5,430,info14);
+
+                        colocatexto(14,5,400,info12);
+
+
+
+                        }
+
+
+
+
+
+                 if (kbhit())
+
+                        {
+
+                        teclado=tecla();
+
+                        if(teclado==27){hecho=1;salir=1;ganador=3;} //salir del menu sorteo
+
+                        if(teclado==13)hecho=1;                     //jugar asi
+
+                        if(teclado==32)sorteo=1;                    //sortear de nuevo
+
+                        }
+
+
+
+} // fin de bucle sorteo : empieza el juego
+
+
+
+
+
+
+
+
+
+myx=10;
+
+myy=10;
+
+turno=0;
+
+contador_turnos=0;
+
+ganador=3; //ganador neutro
+
+
+
+
+
+
+
+for (x=0;x<=9;x++){for(y=0;y<=9;y++){temporal1[x][y]=0;temporal2[x][y]=0;}} //borrar temporales de disparos
+
+for (x=0;x<=9;x++){for(y=0;y<=9;y++){cuadro3[x][y]=cuadro1[x][y];cuadro4[x][y]=cuadro2[x][y];}} //backup de posiciones
+
+
+
+
+
+borradialogo();
+
+
+
+while(!salir)
+
+        {
+
+strcpy(mostrar,"");
+
+strcat(mostrar,info10);
+
+
+
+conta1=0;
+
+conta2=0;
+
+
+
+for (x=0;x<=9;x++){for(y=0;y<=9;y++){
+
+if(temporal1[x][y])conta1++;
+
+if(temporal2[x][y])conta2++;
+
+}}
+
+
+
+
+
+
+
+if(contador_turnos>200)salir=1; // esto e unha especie de "Watchdogtimer"
+
+                                                                                        // con 200 turnos a 100 coordenadas por cuadro
+
+                                                                                        // e imposible que ningun dos dous ganara
+
+                                                                                        // usado para debug principalmente
+
+
+
+        if(myx<10)
+
+                {
+
+                strcpy(mostrar,"");
+
+                strcat(mostrar,info10);
+
+                strcat(mostrar,"   ");
+
+                strcat(mostrar," - ");
+
+                itoa(myx+1,xnumero,10);
+
+                strcat(mostrar,xnumero);
+
+                }
+
+
+
+
+
+        if(myy<10)
+
+                {
+
+                sprintf(yletra, "%c", myy+65);
+
+                strcpy(mostrar,"");
+
+                strcat(mostrar,info10);
+
+                strcat(mostrar,"  ");
+
+                strcat(mostrar,yletra);
+
+                strcat(mostrar," - ");
+
+                if(myx<10){itoa(myx+1,xnumero,10);
+
+                strcat(mostrar,xnumero);}
+
+                }
+
+
+
+
+
+
+
+
+
+
+
+                                        if(!turno) //turno propio
+
+                                        {
+
+                                        colocatexto(color1,9,415,mostrar);
+
+
+
+                                                if(myx!=10 && myy!=10 && !temporal2[myx][myy]) //si vale a coordenada...
+
+                                                {
+
+                                                        contador_turnos++;
+
+                                                        delay(UN_SEGUNDO);
+
+                                                        disparo(myx,myy,2);
+
+                                                        temporal2[myx][myy]=1;
+
+                                                        if(temporal2[myx][myy]*cuadro2[myx][myy]==0)turno=1;
+
+                                                        if(temporal2[myx][myy]*cuadro2[myx][myy]>=1)turno=0;
+
+                                                        colocatexto1(color1,9,415,info10);
+
+                                                        myx=10;
+
+                                                        myy=10;
+
+
+
+                                                 if(!turno){colocatexto1(color1,9,415,info4);delay(DOS_SEGUNDOS);} //tocado
+
+                                                 if(turno){colocatexto1(color1,9,415,info5);delay(UN_SEGUNDO);} // agua
+
+                                                 borradialogo();
+
+                                                }
+
+
+
+                                                if(temporal2[myx][myy]==1) //si la coordenada elejida ya esta tirada...
+
+                                                {colocatexto1(color1,9,415,info10);myx=10;myy=10;}} //anulamos las dos coordenadas
+
+
+
+
+
+
+
+                                        if(turno) //turno da maquina
+
+                                        {
+
+                                        colocatexto1(color2,9,415,info11);
+
+                                        inteligente(); //turno maquina real
+
+                                        contador_turnos++;
+
+                                        if(ganador==3){colocatexto1(color2,9,415,info5);delay(UN_SEGUNDO);} //si no hay ganador es que es agua...
+
+                                        borradialogo();
+
+                                        turno=0;
+
+                                        }
+
+
+
+
+
+                                if (kbhit())
+
+                                {
+
+                                borradialogo();
+
+                                teclado=tecla();
+
+                                 if(teclado==27){salir=1;terminar=0;estado=0;ganador=2;}
+
+                                 if(teclado==25600)chivato();  //corresponde a CTRL + F7 y es un chivato para... tramposos ;)
+
+                                 if(teclado>48 && teclado<58) myx=teclado-49;
+
+                                 if(teclado==48) myx=9;    //pulsamos el 0-> lo maximo que es 9
+
+                                 if(teclado>96 && teclado<107) myy=teclado-97;
+
+                                 if(teclado>64 && teclado<74) myy=teclado-65;
+
+                                }
+
+
+
+frame();
+
+ganadorchek();
+
+
+
+
+
+} //fin de la parte del juego
+
+
+
+
+
+
+
+
+
+if(ganador<2)
+
+                        {
+
+                        setfillstyle(1,0);
+
+                        bar(3,400,636,475);
+
+                        colocatexto(14,9,415,info9);
+
+                        setfillstyle(2,15);
+
+                        bar(40,200,600,340);
+
+                        if(!ganador)colocatexto(10,10,240,info7); //tu ganas (ganador 0)
+
+                        if(ganador)colocatexto(10,10,240,info8); // tu pierdes (ganador 1)
+
+                        while(!kbhit()){frame();}
+
+                        getch();
+
+                        }
+
+}
+
+
+
+
+
+
+
+
+
+
+
+void dibujabarcos(int cuadro)
+
+{
+
+        dibujabarco(cuadro,2);
+
+        dibujabarco(cuadro,3);
+
+        dibujabarco(cuadro,6);
+
+        dibujabarco(cuadro,4);
+
+        dibujabarco(cuadro,5);
+
+}
+
+
+
+
+
+
+
+
+
+void dibujabarco(int cuadro,int tipo)
+
+{
+
+
+
+int x,y,encontrado;
+
+int salir=0;
+
+int temporal[10][10];
+
+
+
+
+
+if(cuadro==1){for(x=0;x<=9;x++){for(y=0;y<=9;y++){temporal[x][y]=cuadro1[x][y];}}}
+
+if(cuadro==2){for(x=0;x<=9;x++){for(y=0;y<=9;y++){temporal[x][y]=cuadro2[x][y];}}}
+
+
+
+
+
+for(y=0;y<=9;y++){for(x=0;x<=9;x++)
+
+        {
+
+        encontrado=temporal[x][y];
+
+        if(encontrado==tipo && !salir)
+
+                {
+
+                salir=1; //cuando pasamos por aki hacemos que se ejecute 1 sola vez esto cambiando el valor
+
+                if(x<9 && temporal[x+1][y]==encontrado)barco(x+1,y+1,cuadro,tipo,0);//horizontal
+
+                if(y<9 && temporal[x][y+1]==encontrado)barco(x+1,y+1,cuadro,tipo,1);//vertical
+
+                }
+
+        }}
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+void aleatorio(int cuadro,int barcos)
+
+{
+
+int longitud,myx,myy,correcto=0,vh,x,y,px,py;
+
+
+
+
+
+for (x=0;x<=9;x++){for(y=0;y<=9;y++){temporal1[x][y]=0;temporal2[x][y]=0;}}
+
+
+
+if(cuadro==1){for(x=0;x<=9;x++){for(y=0;y<=9;y++){temporal1[x][y]=cuadro1[x][y];}}}
+
+if(cuadro==2){for(x=0;x<=9;x++){for(y=0;y<=9;y++){temporal1[x][y]=cuadro2[x][y];}}}
+
+
+
+longitud=barcos;
+
+if(barcos==6)longitud=3;
+
+
+
+while(!correcto)
+
+        {
+
+        vh=random(2); //sorteamos direccion vertical u horizontal
+
+        myx=random(10);
+
+        myy=random(10);
+
+        correcto=1;
+
+
+
+        for (x=0;x<=9;x++){for(y=0;y<=9;y++){temporal2[x][y]=temporal1[x][y];}} //back up de temporal
+
+
+
+        if(!vh) //horinzontal
+
+                {if((myx+longitud)>=9)correcto=0;
+
+                 for(px=myx;px<=myx+longitud-1;px++){
+
+                 if(temporal1[px][myy]!=0)correcto=0;
+
+                 if(temporal1[px][myy]==0){temporal1[px][myy]=barcos;} // escribe barco
+
+                 if(correcto==0){for(x=0;x<=9;x++){for(y=0;y<=9;y++){temporal1[x][y]=temporal2[x][y];}}}
+
+                 }}
+
+
+
+        if(vh) //vertical
+
+                {if((myy+longitud)>=9)correcto=0;
+
+                 for(py=myy;py<=myy+longitud-1;py++){
+
+                if(temporal1[myx][py]!=0)correcto=0;
+
+                if(temporal1[myx][py]==0){temporal1[myx][py]=barcos;}
+
+                if(correcto==0){for(x=0;x<=9;x++){for(y=0;y<=9;y++){temporal1[x][y]=temporal2[x][y];}}}
+
+                }}
+
+
+
+frame();
+
+}
+
+
+
+
+
+if(cuadro==1){for(x=0;x<=9;x++){for(y=0;y<=9;y++){cuadro1[x][y]=temporal1[x][y];}}}
+
+if(cuadro==2){for(x=0;x<=9;x++){for(y=0;y<=9;y++){cuadro2[x][y]=temporal1[x][y];}}}
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+void colocatexto(int color,int tamanho,int posiy,char textoa[])
+
+{
+
+settextstyle(2,0,tamanho);
+
+setcolor(color);
+
+outtextxy( 320-(int(strlen(textoa)/2))*(int(textwidth(textoa)/strlen(textoa))),posiy,textoa);
+
+}
+
+
+
+
+
+
+
+void colocatexto1(int color,int tamanho,int posiy,char textoa[])
+
+{
+
+borradialogo();
+
+settextstyle(2,0,tamanho);
+
+setcolor(color);
+
+outtextxy( 320-(int(strlen(textoa)/2))*(int(textwidth(textoa)/strlen(textoa))),posiy,textoa);
+
+}
+
+
+
+
+
+
+
+
+
+void colocatexto2(int color,int tamanho,int posix,int posiy,char textoa[])
+
+{
+
+settextstyle(2,0,tamanho);
+
+setcolor(color);
+
+outtextxy( posix-(int(strlen(textoa)/2))*(int(textwidth(textoa)/strlen(textoa))),posiy,textoa);
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+// esta parte es puramente grafica. cualquier cambio afecta al modo de mostrarse los barcos
+
+void barco(int x,int y,int cuadro,int tipo, int horver)
+
+{
+
+int desplazado; //se usa para el cuadro al que va el barco
+
+
+
+if(cuadro==1){setcolor(1);desplazado=0;}
+
+if(cuadro==2){setcolor(12);desplazado=308;}
+
+setfillstyle(1,7);
+
+
+
+if (tipo==2)
+
+                        {
+
+                                if(horver==0)
+
+                                        {
+
+                                        fillellipse(30+(x*27)+desplazado,85+(y*27),25,10);
+
+                                        ellipse(30+(x*27)+desplazado,85+(y*27),0,360,23,8);
+
+                                        rectangle(20+(x*27)+desplazado,80+(y*27),39+(x*27)+desplazado,90+(y*27));
+
+                                        rectangle(12+(x*27)+desplazado,82+(y*27),17+(x*27)+desplazado,88+(y*27));
+
+                                        rectangle(43+(x*27)+desplazado,82+(y*27),48+(x*27)+desplazado,88+(y*27));
+
+                                        }
+
+                                if(horver==1)
+
+                                        {
+
+                                        fillellipse(17+(x*27)+desplazado,99+(y*27),10,25);
+
+                                        ellipse(17+(x*27)+desplazado,99+(y*27),0,360,8,23);
+
+                                        rectangle(12+(x*27)+desplazado,89+(y*27),22+(x*27)+desplazado,109+(y*27));
+
+                                        rectangle(14+(x*27)+desplazado,81+(y*27),20+(x*27)+desplazado,86+(y*27));
+
+                                        rectangle(14+(x*27)+desplazado,112+(y*27),20+(x*27)+desplazado,117+(y*27));
+
+                                        }
+
+                         }
+
+
+
+if (tipo==3)
+
+                        {
+
+                                if(horver==0)
+
+                                        {
+
+                                        fillellipse(44+(x*27)+desplazado,86+(y*27),38,10);
+
+                                        ellipse(44+(x*27)+desplazado,86+(y*27),0,360,36,8);
+
+                                        rectangle(28+(x*27)+desplazado,81+(y*27),60+(x*27)+desplazado,91+(y*27));
+
+                                        rectangle(20+(x*27)+desplazado,83+(y*27),25+(x*27)+desplazado,89+(y*27));
+
+                                        rectangle(63+(x*27)+desplazado,83+(y*27),68+(x*27)+desplazado,89+(y*27));
+
+                                        }
+
+                                if(horver==1)
+
+                                        {
+
+                                        fillellipse(16+(x*27)+desplazado,112+(y*27),10,38);
+
+                                        ellipse(16+(x*27)+desplazado,112+(y*27),0,360,8,36);
+
+                                        rectangle(11+(x*27)+desplazado,96+(y*27),21+(x*27)+desplazado,128+(y*27));
+
+                                        rectangle(13+(x*27)+desplazado,87+(y*27),19+(x*27)+desplazado,92+(y*27));
+
+                                        rectangle(13+(x*27)+desplazado,133+(y*27),19+(x*27)+desplazado,138+(y*27));
+
+                                        }
+
+                         }
+
+
+
+if (tipo==6)
+
+                        {
+
+                                if(horver==0)
+
+                                        {
+
+                                        fillellipse(44+(x*27)+desplazado,86+(y*27),38,10);
+
+                                        ellipse(44+(x*27)+desplazado,86+(y*27),0,360,32,8);
+
+                                        ellipse(44+(x*27)+desplazado,86+(y*27),0,360,10,4);
+
+                                        ellipse(32+(x*27)+desplazado,86+(y*27),0,360,5,2);
+
+                                        ellipse(56+(x*27)+desplazado,86+(y*27),0,360,5,2);
+
+                                        }
+
+                                if(horver==1)
+
+                                        {
+
+                                        fillellipse(16+(x*27)+desplazado,112+(y*27),10,38);
+
+                                        ellipse(16+(x*27)+desplazado,112+(y*27),0,360,8,32);
+
+                                        ellipse(16+(x*27)+desplazado,112+(y*27),0,360,4,10);
+
+                                        ellipse(16+(x*27)+desplazado,124+(y*27),0,360,2,5);
+
+                                        ellipse(16+(x*27)+desplazado,100+(y*27),0,360,2,5);
+
+                                        }
+
+                         }
+
+
+
+
+
+if (tipo==4)
+
+                        {
+
+                                if(horver==0)
+
+                                        {
+
+                                        fillellipse(56+(x*27)+desplazado,86+(y*27),50,11);
+
+                                        ellipse(56+(x*27)+desplazado,86+(y*27),0,360,50,11);
+
+                                        ellipse(56+(x*27)+desplazado,86+(y*27),0,360,48,9);
+
+                                        rectangle(25+(x*27)+desplazado,81+(y*27),88+(x*27)+desplazado,91+(y*27));
+
+                                        ellipse(32+(x*27)+desplazado,86+(y*27),0,360,3,3);
+
+                                        ellipse(42+(x*27)+desplazado,86+(y*27),0,360,3,3);
+
+                                        ellipse(52+(x*27)+desplazado,86+(y*27),0,360,3,3);
+
+                                        ellipse(62+(x*27)+desplazado,86+(y*27),0,360,3,3);
+
+                                        ellipse(72+(x*27)+desplazado,86+(y*27),0,360,3,3);
+
+                                        ellipse(82+(x*27)+desplazado,86+(y*27),0,360,3,3);
+
+                                        }
+
+                                if(horver==1)
+
+                                        {
+
+                                        fillellipse(17+(x*27)+desplazado,126+(y*27),11,50);
+
+                                        ellipse(17+(x*27)+desplazado,126+(y*27),0,360,9,48);
+
+                                        rectangle(12+(x*27)+desplazado,96+(y*27),22+(x*27)+desplazado,156+(y*27));
+
+                                        ellipse(17+(x*27)+desplazado,101+(y*27),0,360,3,3);
+
+                                        ellipse(17+(x*27)+desplazado,111+(y*27),0,360,3,3);
+
+                                        ellipse(17+(x*27)+desplazado,121+(y*27),0,360,3,3);
+
+                                        ellipse(17+(x*27)+desplazado,131+(y*27),0,360,3,3);
+
+                                        ellipse(17+(x*27)+desplazado,141+(y*27),0,360,3,3);
+
+                                        ellipse(17+(x*27)+desplazado,151+(y*27),0,360,3,3);
+
+                                        }
+
+                         }
+
+
+
+
+
+
+
+if (tipo==5)
+
+                        {
+
+                                if(horver==0)
+
+                                        {
+
+                                        bar(8+(x*27)+desplazado,74+(y*27),132+(x*27)+desplazado,97+(y*27));
+
+                                        rectangle(10+(x*27)+desplazado,76+(y*27),130+(x*27)+desplazado,95+(y*27));
+
+                                        rectangle(8+(x*27)+desplazado,74+(y*27),132+(x*27)+desplazado,97+(y*27));
+
+                                        rectangle(64+(x*27)+desplazado,76+(y*27),79+(x*27)+desplazado,84+(y*27));
+
+                                        rectangle(69+(x*27)+desplazado,76+(y*27),74+(x*27)+desplazado,80+(y*27));
+
+                                        rectangle(50+(x*27)+desplazado,76+(y*27),55+(x*27)+desplazado,80+(y*27));
+
+                                        rectangle(87+(x*27)+desplazado,76+(y*27),92+(x*27)+desplazado,80+(y*27));
+
+                                        }
+
+                                if(horver==1)
+
+                                        {
+
+                                        bar(5+(x*27)+desplazado,77+(y*27),28+(x*27)+desplazado,201+(y*27));
+
+                                        rectangle(7+(x*27)+desplazado,79+(y*27),26+(x*27)+desplazado,199+(y*27));
+
+                                        rectangle(5+(x*27)+desplazado,77+(y*27),28+(x*27)+desplazado,201+(y*27));
+
+                                        rectangle(7+(x*27)+desplazado,132+(y*27),15+(x*27)+desplazado,147+(y*27));
+
+                                        rectangle(7+(x*27)+desplazado,137+(y*27),11+(x*27)+desplazado,142+(y*27));
+
+                                        rectangle(7+(x*27)+desplazado,118+(y*27),11+(x*27)+desplazado,123+(y*27));
+
+                                        rectangle(7+(x*27)+desplazado,156+(y*27),11+(x*27)+desplazado,161+(y*27));
+
+                                        }
+
+                         }
+
+
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+void disparo(int x,int y,int cuadro)
+
+{
+
+int desplazado;
+
+setcolor(1);
+
+if(cuadro==1)desplazado=44;
+
+if(cuadro==2)desplazado=351;
+
+
+
+if(cuadro==1 && cuadro1[x][y]==0)setfillstyle(1,3);
+
+if(cuadro==1 && cuadro1[x][y]!=0)setfillstyle(1,4);
+
+if(cuadro==2 && cuadro2[x][y]==0)setfillstyle(1,3);
+
+if(cuadro==2 && cuadro2[x][y]!=0)setfillstyle(1,4);
+
+
+
+fillellipse((x*27)+desplazado,112+(y*27),9,9);
+
+ellipse((x*27)+desplazado,112+(y*27),0,360,7,7);
+
+}
+
+
+
+
+
+
+
+
+
+
+
+//esta funcion ademais de comprobar o ganador, elimina os barcos como "hundidos"
+
+void ganadorchek()
+
+{
+
+int x,y,tocado1=0,tocado2=0;
+
+int x2,y2,marcamos=0;
+
+int tipo1=0,tipo2=0;
+
+
+
+for (x=0;x<=9;x++){for(y=0;y<=9;y++)
+
+        {
+
+         tocado1=temporal1[x][y]*cuadro1[x][y]; // na coordenada x y detecta que hay
+
+         tocado2=temporal2[x][y]*cuadro2[x][y];
+
+
+
+         marcamos=0;
+
+
+
+
+
+         if(tocado1!=0) //detectamos si nos han tocado
+
+                        {
+
+                                // tocado1_busca=tocado1;
+
+                                                                for (x2=0;x2<=9;x2++){for(y2=0;y2<=9;y2++){
+
+                                                                        if(cuadro1[x2][y2]==tocado1 && temporal1[x2][y2])marcamos++;}}
+
+                                                                        if(marcamos==tocado1 || (tocado1==6 && marcamos==3)){ //hay un barco hundido- mostralo 1 sola vez
+
+                                                                        dibujabarco(1,tocado1);
+
+                                                                        for (x2=0;x2<=9;x2++){for(y2=0;y2<=9;y2++){
+
+                                                                        if(cuadro1[x2][y2]==tocado1){cuadro1[x2][y2]=0;disparo(x2,y2,1);}}}
+
+                                                                        colocatexto1(color2,9,415,info6);delay(DOS_SEGUNDOS);borradialogo();  //mostrar "hundido"
+
+                                                                        }
+
+
+
+                        }
+
+
+
+         if(tocado2!=0) //detectamos un barco tocado enemigo
+
+                                        {
+
+                                                                for (x2=0;x2<=9;x2++){for(y2=0;y2<=9;y2++){
+
+                                                                                if(cuadro2[x2][y2]==tocado2 && temporal2[x2][y2])marcamos++;}}
+
+                                                                                if(marcamos==tocado2 || (tocado2==6 && marcamos==3)) //hay un barco hundido- mostralo 1 sola vez
+
+                                                                                        {   //esto es asi por que contamos tantas casillas como tipo
+
+                                                                                         dibujabarco(2,tocado2);
+
+                                                                                        for (x2=0;x2<=9;x2++){for(y2=0;y2<=9;y2++){ //anula barco da cuadricula
+
+                                                                                        if(cuadro2[x2][y2]==tocado2){cuadro2[x2][y2]=0;disparo(x2,y2,2);}}}
+
+                                                                                        colocatexto1(color1,9,415,info6);delay(DOS_SEGUNDOS);borradialogo();
+
+                                                                                        }
+
+                                                                                } // final de for
+
+                                                } // final de if tocado
+
+} //final de contador
+
+
+
+
+
+
+
+for (x=0;x<=9;x++){for(y=0;y<=9;y++){
+
+if(!cuadro1[x][y])tipo1++;
+
+}}
+
+for (x=0;x<=9;x++){for(y=0;y<=9;y++){
+
+if(!cuadro2[x][y])tipo2++;
+
+}}
+
+if(tipo2==100){ganador=0;salir=1;} //hemos ganado
+
+if(tipo1==100){ganador=1;salir=1;} //hemos perdido
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+void chivato(void)
+
+{
+
+
+
+int x,y,barco1[7],barco2[7],intermedio1[15][15],intermedio2[15][15];
+
+
+
+for(x=0;x<=6;x++)
+
+{barco1[x]=0;barco2[x]=0;}
+
+
+
+for (x=0;x<=9;x++){for(y=0;y<=9;y++){intermedio1[x][y]=0;intermedio2[x][y]=0;}}
+
+
+
+for (x=0;x<=9;x++){for(y=0;y<=9;y++){
+
+if(cuadro3[x][y])numeroen(x,y,cuadro3[x][y],1);
+
+if(cuadro4[x][y])numeroen(x,y,cuadro4[x][y],2);
+
+if(cuadro1[x][y])barco1[cuadro1[x][y]]=1;
+
+if(cuadro2[x][y])barco2[cuadro2[x][y]]=1;
+
+}}
+
+
+
+cuadricula_a();
+
+cuadricula_b();
+
+
+
+for (x=0;x<=9;x++){for(y=0;y<=9;y++){
+
+intermedio1[x][y]=cuadro1[x][y];
+
+intermedio2[x][y]=cuadro2[x][y];
+
+cuadro1[x][y]=cuadro3[x][y];
+
+cuadro2[x][y]=cuadro4[x][y];
+
+}}
+
+
+
+for (x=0;x<=9;x++){for(y=0;y<=9;y++){
+
+if(!barco1[cuadro3[x][y]])dibujabarco(1,cuadro3[x][y]);
+
+if(!barco2[cuadro4[x][y]])dibujabarco(2,cuadro4[x][y]);
+
+}}
+
+
+
+for (x=0;x<=9;x++){for(y=0;y<=9;y++){cuadro1[x][y]=intermedio1[x][y];cuadro2[x][y]=intermedio2[x][y];}}
+
+
+
+dibujabarcos(1);
+
+
+
+for (x=0;x<=9;x++){for(y=0;y<=9;y++){
+
+if(temporal1[x][y])disparo(x,y,1);
+
+if(temporal2[x][y])disparo(x,y,2);
+
+}}
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+void inteligente() //aki e donde da ca¤a a maquina... se quere claro
+
+{
+
+int aleax,aleay,x,y,conta1,repetir,solo,tengo,eje,hecho1,hecho2,hecho3,hecho4,paso;
+
+int n,vh;
+
+int minimo1;
+
+
+
+
+
+for (x=0;x<=9;x++){temporal1[x][10]=1;}
+
+for(y=0;y<=9;y++){temporal1[10][y]=1;}
+
+
+
+
+
+do{
+
+
+
+conta1=0;
+
+n=0;
+
+
+
+llenavacio();
+
+minimo1=minimo(); //barco mas pequeño que existe
+
+
+
+for (x=0;x<=9;x++){for(y=0;y<=9;y++){n=0; //cargamos un patron de los aciertos
+
+if(temporal1[x][y] && cuadro1[x][y])n=1;  // que deberiamos investigar
+
+if(n)conta1++;
+
+ojo[x][y]=n;}}
+
+
+
+
+
+if(!conta1 && ganador==3){ //aki hay algun  problemo
+
+do{  //generar casilla aleatoria (no es definitiva)
+
+aleax=random(10); //solo se genera en caso de que non te¤amos ningun acerto
+
+aleay=random(10);
+
+}while(temporal1[aleax][aleay] || cuenta1[aleax][aleay]<minimo1);}
+
+
+
+// aki debe empezar a pensar a maquina
+
+
+
+frame();
+
+tengo=0;
+
+if(conta1) //significa que temos localizado algo
+
+{
+
+
+
+ frame(); //efecto
+
+
+
+
+
+                for (x=0;x<=9;x++){for(y=0;y<=9;y++)
+
+                {
+
+                        randomize();
+
+                        frame();
+
+
+
+                        if(ojo[x][y] && !tengo) //localizado acierto
+
+                        {
+
+                        vh=4; // 4 significa nada
+
+                        solo=0;
+
+
+
+                        //xa sabemos si hai algun acerto o lado
+
+                        if(x>0 && ojo[x-1][y])vh=0;
+
+                        if(x<9 && ojo[x+1][y])vh=1;
+
+                        if(y>0 && ojo[x][y-1])vh=2;
+
+                        if(y<9 && ojo[x][y+1])vh=3;
+
+
+
+                         //si vh=4 significa que o acerto esta solo
+
+                        if(vh==4)solo=1;
+
+                        if(vh==0 || vh==1)eje=0; //decidimos eje 0 horizontal
+
+                        if(vh==2 || vh==3)eje=1; // e 1 vertical
+
+
+
+                                hecho1=0;
+
+                                hecho2=0;
+
+                                hecho3=0;
+
+                                hecho4=0;
+
+
+
+                                paso=0;
+
+
+
+
+
+                                        while(!tengo && solo) //si non te¤o coordenadas e esta solo, sorteo a direccion
+
+                                        {
+
+                                        vh=random(4); //sortea aleatoria da direccion (danos igual)
+
+                                                                                         //como esta solo sorteamos en 4 direccions
+
+                                        if(x>0 && vh==0 && !temporal1[x-1][y] && cuenta1[x-1][y]+1>=minimo1){tengo=1;hecho1=1;}
+
+                                        if(x<9 && vh==1 && !temporal1[x+1][y] && cuenta1[x+1][y]+1>=minimo1){tengo=1;hecho2=1;}
+
+                                        if(y>0 && vh==2 && !temporal1[x][y-1] && cuenta1[x][y-1]+1>=minimo1){tengo=1;hecho3=1;}
+
+                                        if(y<9 && vh==3 && !temporal1[x][y+1] && cuenta1[x][y+1]+1>=minimo1){tengo=1;hecho4=1;}
+
+
+
+
+
+                                        if(hecho1 && hecho2 && hecho3 && hecho4) //corrige bug de inteligencia, collendo a direcc + grande
+
+                                        {                                        //evitamos elegir unha dirrecion na que realmente non colle o barco
+
+                                        if(x>0){paso=cuenta1[x-1][y];vh=0;}
+
+                                        if(x<9 && cuenta1[x+1][y]>paso){paso=cuenta1[x+1][y];vh=1;}
+
+                                        if(y>0 && cuenta1[x][y-1]>paso){paso=cuenta1[x][y-1];vh=2;}
+
+                                        if(y<9 && cuenta1[x][y+1]>paso){paso=cuenta1[x][y+1];vh=3;}
+
+                                        tengo=1;
+
+                                        }
+
+
+
+                                        if(vh==0 && tengo){aleax=x-1;aleay=y;} //vh ven sorteada anteriormente
+
+                                        if(vh==1 && tengo){aleax=x+1;aleay=y;} // e modificada no caso de que se vaia a elexir unha casilla pequena
+
+                                        if(vh==2 && tengo){aleax=x;aleay=y-1;}
+
+                                        if(vh==3 && tengo){aleax=x;aleay=y+1;}
+
+
+
+                                        }
+
+
+
+
+
+                                //      paso=0;
+
+
+
+
+
+                                while (!solo && !tengo && !paso) //la funcion gorilera!!!!!!
+
+                                {
+
+                                vh=random(2); //solo dos direcciones ahora. significa que hay dos disparos por lo menos, y
+
+                                paso=0;       // una direccion clara (en vertical o horizontal)
+
+                                tengo=0;
+
+
+
+                                //eje =0 horizontal , 1 vertical predefinido anterior. Unha de estas coordenadas ahora xa a conozco
+
+                                if(!eje)aleay=y; //decidido Y e xogamos con X
+
+                                if(eje)aleax=x;  //decidido X e xogamos con Y
+
+
+
+
+
+                                if(!eje && !vh && x>0) //eje y hacia izquierda
+
+                                        {if(!temporal1[x-1][y]){tengo=1;aleax=x-1;}  //ten que estar sin disparar para que nos sirva, eso 1
+
+                                hecho1=1;}
+
+                                if(x==0 && !eje && !tengo)hecho1=1; //corrije bloqueo da maquina cando hay un barco pegado
+
+                                                                                                                                //en este caso pegado a X-0 izquierda, pero sucederia igual
+
+                                                                                                                                //con todas as direccions
+
+
+
+
+
+                                if(!eje && vh && x<9) //eje x hacia dereita
+
+                                        {if(!temporal1[x+1][y]){tengo=1;aleax=x+1;}
+
+                                hecho2=1;}
+
+                                if(x==9 &&  !eje && !tengo)hecho2=1;
+
+
+
+
+
+
+
+                                if(eje && !vh && y>0)  //eje y hacia arriba
+
+                                {if(!temporal1[x][y-1]){tengo=1;aleay=y-1;}
+
+                                 hecho1=1;}
+
+                                if(y==0 && eje &&!tengo)hecho1=1;
+
+
+
+
+
+                                if(eje && vh && y<9) // eje y hacia abaixo
+
+                                {if(!temporal1[x][y+1]){tengo=1;aleay=y+1;}
+
+                                 hecho2=1;}
+
+                                if(y==9 && eje  && !tengo)hecho2=1;
+
+
+
+
+
+
+
+                                                //pregunta: para que facemos esto????
+
+                                                // pasa que no sorteo anterior podemos decidir que o impacto elejido xa esta dado
+
+                                                // asi que usamos a variable paso, para pasar de este acerto (que non soluciona nada)
+
+                                                // e pasamos o seguinte. (sin esto pode bloquearse a inteligencia)
+
+                                                //Asi conseguimos seguir outro acerto a ver que ten, evidentemente
+
+                                                // xa que o barco esta si fundir, algun deles ten que ter un "auga" o lado
+
+                                                //pasamos de esta coordenada, pero tengo ainda vale 0, asi que vamos a outro
+
+                                        if(hecho1 && hecho2 || tengo )paso=1;
+
+
+
+                                }
+
+
+
+
+
+
+
+
+
+
+
+
+
+                        }//salida do analisis  de ojo (normalmente con algo definitivo claro)
+
+
+
+                }} //final do localizador do barrido
+
+
+
+}
+
+
+
+
+
+// en este punto esta decidido o ALEAX - ALEAY definitivos
+
+
+
+
+
+coloca_texto_maquina(aleax,aleay);
+
+temporal1[aleax][aleay]=1; //diparo real
+
+disparo(aleax,aleay,1);
+
+repetir=temporal1[aleax][aleay]*cuadro1[aleax][aleay];//comprobamos si tocado
+
+if(repetir){colocatexto1(color2,9,415,info4);delay(UN_SEGUNDO);} //tocado
+
+ganadorchek(); //para quitar barcos hundidos en caso de repetir turno
+
+}while(repetir && ganador==3);  //repetimos si repetir=1 y no hay ganador aun
+
+
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+int maximo() //retorna el maximo de casillas a explorar (el barco mas grande que existe)
+
+{           //contamos que barcos ya no estan...
+
+int x,y,maximo=2,largo;
+
+
+
+for (x=0;x<=9;x++){for(y=0;y<=9;y++){
+
+largo=cuadro1[x][y];
+
+if(cuadro1[x][y]==6)largo=3;
+
+if(largo>=maximo && largo)maximo=largo;
+
+}}
+
+return maximo;
+
+}
+
+
+
+
+
+
+
+int minimo() //retorna el minimo de casillas a explorar (el barco mas pequeño vamos)
+
+{           //contamos que barcos ya no estan...
+
+int x,y,minimo=5,largo;
+
+
+
+for (x=0;x<=9;x++){for(y=0;y<=9;y++){
+
+largo=cuadro1[x][y];
+
+if(cuadro1[x][y]==6)largo=3;
+
+if(largo<=minimo && largo)minimo=largo;
+
+}}
+
+
+
+return minimo;
+
+}
+
+
+
+
+
+
+
+
+
+//cuenta1 e unha matriz que pon o corresponde o num maximo de casilla libres colindantes
+
+void llenavacio(void)
+
+{
+
+int x,y,maximo,temporal; //calculo de casillas vacias cercanas en recto
+
+int conta,sumar;
+
+
+
+for (x=0;x<=9;x++){for(y=0;y<=9;y++){ //recorremos temporal1 y apuntamos en cuenta1
+
+sumar=1;
+
+cuenta1[x][y]=0;
+
+maximo=0;
+
+                if(!temporal1[x][y]) //si esta vacio calculamos los espacios
+
+                {sumar=1;
+
+                 maximo=0;
+
+                 for(conta=x;conta<=9;conta++){
+
+                                if(temporal1[conta][y])sumar=0;
+
+                                if(!temporal1[conta][y]&& sumar)maximo++;
+
+                                }sumar=1;
+
+                         for(conta=x;conta>=0;conta--){
+
+                                if(temporal1[conta][y])sumar=0;
+
+                                if(!temporal1[conta][y]&& sumar)maximo++;
+
+                                }maximo--;
+
+                if(maximo>=5)maximo=5;
+
+                 temporal=maximo;
+
+                 sumar=1;
+
+                 maximo=0;
+
+
+
+                 for(conta=y;conta<=9;conta++){
+
+                                if(temporal1[x][conta])sumar=0;
+
+                                if(!temporal1[x][conta]&& sumar)maximo++;
+
+                                }sumar=1;
+
+                         for(conta=y;conta>=0;conta--){
+
+                                if(temporal1[x][conta])sumar=0;
+
+                                if(!temporal1[x][conta]&& sumar)maximo++;
+
+                                }maximo--;
+
+
+
+                if(maximo>=5)maximo=5;
+
+                if(temporal>maximo)maximo=temporal;
+
+                cuenta1[x][y]=maximo;
+
+                }
+
+
+
+}}
+
+
+
+
+
+}
+
+
+
+
+
+// esta funcion podese usar en modo depuracion con calquer matriz
+
+void numeroen(int mx,int my,int numero,int cuadros) //funcion que  pon un numero  n nas coordenadas do cuadro indicado
+
+{                                                   //sirve para moitos modos de depuraci¢n
+
+int relx=33,rely=100,cuadro=27;
+
+char yletra[2];
+
+char mostrar[2];
+
+
+
+if(cuadros==2)relx=342;
+
+setfillstyle(1,3);
+
+bar((mx*cuadro)+relx-2,(my*cuadro)+rely,(mx*cuadro)+relx+8,(my*cuadro)+rely+12);
+
+setcolor(10);
+
+strcpy(mostrar,"");
+
+sprintf(yletra, "%d", numero);
+
+strcat(mostrar,yletra);
+
+settextstyle(2,0,4);
+
+outtextxy((mx*27)+relx,(my*27)+rely,mostrar);
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+void borradialogo (void) // borra zona de dialogo con negro
+
+{setfillstyle(1,0);
+
+bar(1,400,638,460);
+
+}
+
+
+
+
+
+
+
+
+
+//comproba a cuadricula correspondente de que non ten barco pegados
+
+int prueba_aleatorio(int cuadro)
+
+{
+
+int x,y,ok=0;
+
+int mio[10][10];
+
+
+
+if(cuadro==1)for (x=0;x<=9;x++){for(y=0;y<=9;y++){mio[x][y]=cuadro1[x][y];}}
+
+if(cuadro==2)for (x=0;x<=9;x++){for(y=0;y<=9;y++){mio[x][y]=cuadro2[x][y];}}
+
+
+
+ok=1; //inicialmente nos vale la combinacion, luego si encontramos el minimo fallo, nos lo cargamos
+
+
+
+for (x=0;x<=9;x++){for(y=0;y<=9;y++){ //lo tengoooo
+
+if (x>0 && mio[x][y] && mio[x-1][y]!=mio[x][y] && mio[x-1][y])ok=0;
+
+if (x<9 && mio[x][y] && mio[x+1][y]!=mio[x][y] && mio[x+1][y])ok=0;
+
+if (y>0 && mio[x][y] && mio[x][y-1]!=mio[x][y] && mio[x][y-1])ok=0;
+
+if (y<9 && mio[x][y] && mio[x][y+1]!=mio[x][y] && mio[x][y+1])ok=0;
+
+}}
+
+
+
+return ok;
+
+}
+
+
+
+
+
+//funcion parida! problemas con variables int ... causa desconocida
+
+//desde aqui funciona ben ?¨?¨????¨¨¨?
+
+void coloca_texto_maquina(int x,int y)
+
+{
+
+char mostrar[60];
+
+char yletra[1];
+
+char xnumero[2];
+
+
+
+                strcpy(mostrar,"");
+
+                strcat(mostrar,info11);
+
+                strcat(mostrar,"  :  ");
+
+                sprintf(yletra, "%c", y+65);
+
+                strcat(mostrar,yletra);
+
+                strcat(mostrar," - ");
+
+                itoa(x+1,xnumero,10);
+
+                delay(UN_SEGUNDO);
+
+                colocatexto1(color2,9,415,mostrar);
+
+                delay(UN_SEGUNDO);
+
+                strcat(mostrar,xnumero);
+
+                colocatexto1(color2,9,415,mostrar);
+
+                delay(DOS_SEGUNDOS);
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// NADA MAIS - NUNCA MAIS - 2004

@@ -2,8 +2,8 @@
 
 //Leer desde el formulario (login.html)
 //input: user / password
-$user = $_POST["user"];
-$user_password = $_POST["user_password"];
+$user = $_POST["usuario"];
+$user_password = $_POST["pass_usuario"];
 
 //echo $user . "<br>";  (pa probar)
 //echo $password;  (pa probar)
@@ -13,7 +13,7 @@ $user_password = $_POST["user_password"];
 $servername = "localhost:3307";
 $username = "root";
 $password = "";
-$db = "web";
+$db = "proyecto3x1";
 // Create connection
 $conn = mysqli_connect($servername, $username, $password, $db);
 
@@ -24,7 +24,7 @@ if (!$conn) {
 //echo "YAS";
 
 // select from user where ....
-$query = "SELECT user FROM users WHERE user='$user' AND user_password='$user_password'";
+$query = "SELECT usuario FROM usuarios WHERE usuario='$usuario' AND pass_usuario='$pass_usuario'";
 //$query = "SELECT * FROM users WHERE user='$user' AND password='$user_password'";
 //echo $query;
 

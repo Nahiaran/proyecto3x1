@@ -2,8 +2,8 @@
 
 //Leer desde el formulario (login.html)
 //input: user / password
-$user = $_POST["usuario"];
-$user_password = $_POST["pass_usuario"];
+$usuario = $_POST["usuario"];
+$pass_usuario = $_POST["pass_usuario"];
 
 //echo $user . "<br>";  (pa probar)
 //echo $password;  (pa probar)
@@ -24,7 +24,7 @@ if (!$conn) {
 //echo "YAS";
 
 // select from user where ....
-$query = "SELECT usuario FROM usuarios WHERE usuario='$usuario' AND pass_usuario='$pass_usuario'";
+$query = "SELECT pass_usuario FROM usuarios WHERE usuario='$usuario'";
 //$query = "SELECT * FROM users WHERE user='$user' AND password='$user_password'";
 //echo $query;
 
@@ -32,16 +32,15 @@ $result = mysqli_query($conn, $query);
 /* numeric array */
 
 $row = mysqli_fetch_array($result, MYSQLI_NUM);
-//echo $row[0];
-//printf ("%s (%s)\n", $row[0], $row[1]);
-// if ok go to loginok.html
- if ($row) {
-    header('Location: '."home.html");
-    //echo "Login OK";
-    // session
-    $_SESSION['user'] = $user;
-} else {
-    // echo "Login KO";
-    header('Location: '."login.html");
+
+$hash = $row[0];
+if (password_verify($pass_usuario, $hash)) {
+    // Success!
+    session_start();
+    $_SEssion['usuario'] = $usuario;
+    header('Location: '."hom.html");
 }
-// if not ok return to login.html
+else {
+    // Invalid credentials
+    echo header('Location: '.'login.html');
+}

@@ -6,7 +6,20 @@
 <input name="usuario" type="text">
 <br>
 Contrase&ntildea <br>
-<input name="pass_usuario" type="password" value="">
+<input name="pass_usuario" type="password" id="contra" minlength="6" maxlength="30"><br><br>
+<input type="checkbox" onclick="miFuncion()">Mostrar Contrase&ntildea
+
+<script>
+    function miFuncion() {
+      var x = document.getElementById("contra");
+      if (x.type === "password") {
+        x.type = "text";
+      } else {
+        x.type = "password";
+      }
+    }
+    </script>
+
 <br><br>
 <input name="registrar" type="submit" value=" Registrar">
 </form>

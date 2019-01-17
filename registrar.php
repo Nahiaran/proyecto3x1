@@ -16,5 +16,5 @@ $insert = "INSERT INTO usuarios(usuario, pass_usuario) VALUES ('$usuario','$hash
 //echo $insert;
 $query = $conn -> query("$insert");
   
-//header('Location: home.html');
+header('Location: hom.html');
 ?>

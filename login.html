@@ -3,8 +3,18 @@
 
     <b>Login:</b><br><br>
     Usuario: <input type="text" name="usuario" value= ""><br><br>
-    Contrasena: <input type="password" name="pass_usuario" value=""><br><br>
-
+    Contrase&ntildea: <input type="password" name="pass_usuario" id="contra"value="">
+    <input type="checkbox" onclick="miFuncion()">Mostrar Contrase&ntildea<br><br>
+    <script>
+        function miFuncion() {
+          var x = document.getElementById("contra");
+          if (x.type === "password") {
+            x.type = "text";
+          } else {
+            x.type = "password";
+          }
+        }
+        </script>
     <!--<input type="reset" value="Reset Login Form" />-->
     <input type="submit" name="submit2" value="login"/>
 

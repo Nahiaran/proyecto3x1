@@ -37,8 +37,8 @@ $hash = $row[0];
 if (password_verify($pass_usuario, $hash)) {
     // Success!
     session_start();
-    $_SEssion['usuario'] = $usuario;
-    header('Location: '."hom.html");
+    $_SESSION['usuario'] = $usuario;
+    header('Location: '."indexx.php");
 }
 else {
     // Invalid credentials

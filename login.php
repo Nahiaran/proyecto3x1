@@ -5,23 +5,10 @@
 $usuario = $_POST["usuario"];
 $pass_usuario = $_POST["pass_usuario"];
 
+include ("conexion.php");
+
 //echo $user . "<br>";  (pa probar)
 //echo $password;  (pa probar)
-
-//conect to mysql (TABLA:users, COLUMNAS:name/password)
-
-$servername = "localhost:3307";
-$username = "root";
-$password = "";
-$db = "proyecto3x1";
-// Create connection
-$conn = mysqli_connect($servername, $username, $password, $db);
-
-// Check connection
-if (!$conn) {
-    die("Connection failed: " . mysqli_connect_error());
-}
-//echo "YAS";
 
 // select from user where ....
 $query = "SELECT pass_usuario FROM usuarios WHERE usuario='$usuario'";
@@ -42,5 +29,5 @@ if (password_verify($pass_usuario, $hash)) {
 }
 else {
     // Invalid credentials
-    echo header('Location: '.'login.html');
+    header('Location: '.'login.html');
 }

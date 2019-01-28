@@ -2,8 +2,8 @@
 <form action="login.php" method="POST">
 
     <b>Login:</b><br><br>
-    Usuario: <input type="text" name="usuario" value= ""><br><br>
-    Contrase&ntildea: <input type="password" name="pass_usuario" id="contra"value="">
+    Usuario: <input type="text" name="usuario" required value= ""><br><br>
+    Contrase&ntildea: <input type="password" name="pass_usuario" required id="contra"value="">
     <input type="checkbox" onclick="miFuncion()">Mostrar Contrase&ntildea<br><br>
     <script>
         function miFuncion() {
@@ -15,8 +15,7 @@
           }
         }
         </script>
-    <!--<input type="reset" value="Reset Login Form" />-->
-    <input type="submit" name="submit2" value="login"/>
+    
+    <input type="submit" name="submit2" value="Iniciar Sesión"/>
 
 </form>
-</html>

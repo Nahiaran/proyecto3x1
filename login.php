@@ -1,14 +1,10 @@
 <?php
-
-//Leer desde el formulario (login.html)
-//input: user / password
-$usuario = $_POST["usuario"];
-$pass_usuario = $_POST["pass_usuario"];
+session_start(); // Iniciando sesion
+// Define $username y $password
+$usuario=$_POST['usuario'];
+$pass_usuario=$_POST['pass_usuario'];
 
 include ("conexion.php");
-
-//echo $user . "<br>";  (pa probar)
-//echo $password;  (pa probar)
 
 // select from user where ....
 $query = "SELECT pass_usuario FROM usuarios WHERE usuario='$usuario'";
@@ -16,7 +12,7 @@ $query = "SELECT pass_usuario FROM usuarios WHERE usuario='$usuario'";
 //echo $query;
 
 $result = mysqli_query($conn, $query);
-/* numeric array */
+ //numeric array 
 
 $row = mysqli_fetch_array($result, MYSQLI_NUM);
 

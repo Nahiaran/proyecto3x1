@@ -25,7 +25,7 @@ if (password_verify($pass_usuario, $hash)) {
     // Success!
     session_start();
     $_SESSION['usuario'] = $usuario;
-    header('Location: '."indexx.php");
+    header('Location: '."index.php");
 }
 else {
     // Invalid credentials

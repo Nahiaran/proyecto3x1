@@ -11,5 +11,5 @@ $insert = "INSERT INTO usuarios(usuario, pass_usuario, email) VALUES ('$usuario'
 //echo $insert;
 $query = $conn -> query("$insert");
   
-header('Location: indexx.php');
+header('Location: index.php');
 ?>

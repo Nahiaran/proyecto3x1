@@ -3,10 +3,10 @@
 
 <form action="registrar.php" method="POST">
     Usuario <br>
-<input name="usuario" type="text" minlength="4" maxlength="20">
+<input name="usuario" type="text" required minlength="4" maxlength="20">
 <br>
 Contrase&ntildea <br>
-<input name="pass_usuario" type="password" id="contra" minlength="6" maxlength="30">
+<input name="pass_usuario" type="password" id="contra" required minlength="6" maxlength="30">
 <input type="checkbox" onclick="miFuncion()">Mostrar Contrase&ntildea
 <script>
     function miFuncion() {
@@ -20,7 +20,7 @@ Contrase&ntildea <br>
     </script>
 <br>
 E-mail<br>
-<input name="email" type="text"><br><br>
+<input name="email" required type="text"><br><br>
 <input name="registrar" type="submit" value=" Registrar">
 </form>
 

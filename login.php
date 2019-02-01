@@ -1,7 +1,7 @@
 <?php
 session_start();
 if (!isset($_SESSION['usuario'])) {
-    header('Location: '."login.html");
+    header('Location: '."logindata.php");
 }
 /*else {
     require_once 'vendor/autoload.php';
@@ -14,6 +14,8 @@ if (!isset($_SESSION['usuario'])) {
 // Define $username y $password
 $usuario=$_POST['usuario'];
 $pass_usuario=$_POST['pass_usuario'];
+
+$error = "El correo electrónico o la contraseña es inválida.";
 
 include ("conexion.php");
 
@@ -36,5 +38,5 @@ if (password_verify($pass_usuario, $hash)) {
 }
 else {
     // Invalid credentials
-    header('Location: '.'login.html');
+    header('Location: '.'logindata.php');
 }

@@ -1,7 +1,7 @@
 <?php
 session_start();
 if (!isset($_SESSION['usuario'])) {
-    header('Location: '."login.html");
+    header('Location: '."logindata.php");
 }
 /*else {
     require_once 'vendor/autoload.php';

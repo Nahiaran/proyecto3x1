@@ -1,8 +1,7 @@
-<!DOCTYPE HTML>
 <html>
 <head>
 <title>Proyecto 3x1 - Login</title>
-<!-- Custom Theme files -->
+
 <link href="css/style.css" rel="stylesheet" type="text/css" media="all"/>
 <!-- for-mobile-apps -->
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -15,7 +14,8 @@
 <!--google fonts-->
 </head>
 <body>
-<!--header start here-->
+
+
 <h1>Formulario de inicio de sesión</h1>
 <div class="header agile">
 	<div class="wrap">
@@ -27,20 +27,11 @@
 				<input type="password" placeholder="Contraseña" name="pass_usuario" required>
         <input name="submit" type="submit" value="Ingresar"><br><br>
         No est&aacutes registrado?
-        <a href="registrar.html" class="text-center">Reg&iacutestrate</a>
+        <a href="registrardata.php" class="text-center">Reg&iacutestrate</a>
 			</form>
-			<div class="clear"> </div>
-				<span><?php echo $error; ?></span>
 			</div>
-			
-			
 		</div>
 	</div>
 </div>
-<!--header end here-->
-<!--copy rights end here-->
-</div>
-<!--copyrights start here-->
-
 </body>
 </html>

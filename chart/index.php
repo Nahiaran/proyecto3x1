@@ -16,8 +16,9 @@ if (!isset($_SESSION['usuario'])) {
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
 <style>
-body,h1,h2,h3,h4,h5,h6 {font-family: "Raleway", Arial, Helvetica, sans-serif}
+body,h1,h2,h3,h4,h5,h6,h7,h8,h9 {font-family: "Raleway", Arial, Helvetica, sans-serif}
 .myLink {display: none}
 </style>
 
@@ -38,62 +39,49 @@ body,h1,h2,h3,h4,h5,h6 {font-family: "Raleway", Arial, Helvetica, sans-serif}
 
 <style>
 body {
-  background-image: url("images/wing2.jpg");
+  background-image: url("images/fly.jpg");
   background-size: cover;
   background-repeat: no-repeat;
   background-attachment: fixed;
-
 }
 </style>
+
+<p align="center"> <font color="#727A82"><u><b><h7>Ciudades más visitadas en 2018</h7></b></u></p></font>
+<p align="center"> <font color="#727A82"><b><h9>Total de turistas en millones</h9></b></p></font>
 </head>
 <body>
-<div id="chartdiv" style="width: 100%; height: 100%;"></div>
+
+<div id="chartdiv" style="width: 100%; height: 69%;"></div>
     <script type="text/javascript">
-
-
-AmCharts.makeChart( "chartdiv", 
+AmCharts.makeChart( "chartdiv",
 {
   "type": "serial",  //
   "theme": "light",
-  
- 
-  "titles": [{
-    "text": "Ciudades más visitadas en 2018"  //título
-  }, {
-    "text": "Total de turistas en millones", //subtítulo
-    "bold": false //negrita no
-  }],
-
   "dataLoader": {
-       "url": 'data.php',  
+       "url": 'data.php',
        "format": "json"
 },
-  
+
 "categoryField": "nombre",
 "rotate": false,
-"color" : "#FFFFFF", //COLOR TEXTOS 
-
-
-
-
+"color" : "#727A82", //COLOR TEXTOS
 "categoryAxis": {
   "gridPosition": "start",
   "axisAlpha": 0,
-  "axisColor": "#FFFFFF"  //linea base  
-}, 
-    
+  "axisColor": "#727A82"  //linea base
+},
+
   "valueAxes": [{  //gráfica vertical
     "axisAlpha": 0, //linea vertical
     "position": "left", //posición texto
     "title": "Millones" //texto izq
   }],
-
   "graphs": [ {
     "type": "column", //tipo gráfico
     "title": "Turistas", //nombre
     "valueField": "visitantes", //nombre del campo (bd)
-    "lineAlpha": 0, //linea exterior columna si/no  
-    "fillColors": "white",     //COLOR columnas     #ADD981 #bdbafc
+    "lineAlpha": 0, //linea exterior columna si/no
+    "fillColors": "grey",     //COLOR columnas     #ADD981 #bdbafc
     "fillAlphas": 0.6, //saturación columnas
     "balloonText": "[[title]] en [[category]] en 2018:<br><b>[[value]] millones</b>" //texto globo
   } ]
@@ -115,3 +103,4 @@ AmCharts.makeChart( "chartdiv",
 </footer>
 </body>
 </html>
+

@@ -37,6 +37,8 @@
     </script>
         <input name="email" placeholder="Email" required type="text">
         <input name="registrar" type="submit" value="Registrarme">
+        Ya est&aacutes registrado?
+        <a href="logindata.php" class="text-center">Iniciar Sesión</a>
 			</form>
 			</div>
 		</div>

@@ -1,8 +1,8 @@
 <html>
 <head>
     <title>Paises más visitados en 2018</title>
-    <script type="text/javascript" src=amcharts/amcharts.js></script>
-    <script type="text/javascript" src=amcharts/serial.js></script>
+    <script type="text/javascript" src=amcharts.js></script>
+    <script type="text/javascript" src=serial.js></script>
     <script type="text/javascript" src=dataloader.min.js></script>
     
 <H2 align="center"> PAISES MÁS VISITADOS EN 2018 </H2>

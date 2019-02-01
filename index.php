@@ -44,7 +44,7 @@ body,h1,h2,h3,h4,h5,h6 {font-family: "Raleway", Arial, Helvetica, sans-serif}
   <div class="w3-display-middle" style="width:65%">
     <div class="w3-bar w3-black">
       <button class="w3-bar-item w3-button tablink" onclick="openLink(event, 'Vuelos');"><i class="fa fa-plane w3-margin-right"></i>Vuelos</button>
-      <button class="w3-bar-item w3-button tablink" onclick="openLink(event, 'Hoteles');"><i class="fa fa-bed w3-margin-right"></i>Hoteles</button>
+      <button class="w3-bar-item w3-button tablink" onclick="openLink(event, 'Destinos');"><i class="fa fa-globe w3-margin-right"></i>Destinos</button>
     </div>
 
     <!-- Tabs -->
@@ -63,11 +63,11 @@ body,h1,h2,h3,h4,h5,h6 {font-family: "Raleway", Arial, Helvetica, sans-serif}
       <p><button class="w3-button w3-dark-grey">Buscar fechas</button></p>
     </div>
 
-    <div id="Hoteles" class="w3-container w3-white w3-padding-16 myLink">
-      <h3>Encuentra los mejores Hoteles</h3>
-      <p>Reserva con nosotros y recibe las mejores tarifas y promociones.</p>
-      <p>Conocemos hoteles - conocemos el comfort.</p>
-      <p><button class="w3-button w3-dark-grey">Buscar Hoteles</button></p>
+    <div id="Destinos" class="w3-container w3-white w3-padding-16 myLink">
+      <h3>Encuentra los destinos más populares</h3>
+      <p>¿Cuales han sido las ciudades más visitadas en 2018?</p>
+      <p>Descúbrelo:</p>
+      <p><button class="w3-button w3-dark-grey" onclick="window.location.href='chart/index.php'">Destinos</button></p>
     </div>
   </div>
 </header>
@@ -172,18 +172,17 @@ body,h1,h2,h3,h4,h5,h6 {font-family: "Raleway", Arial, Helvetica, sans-serif}
   </div>
   
 <!-- End page content -->
-</div>
 
-<!-- Footer -->
+
 <footer class="w3-container w3-center w3-opacity w3-margin-bottom">
   <h5>Encuentranos</h5>
   <div class="w3-xlarge w3-padding-16">
-    <i class="fa fa-facebook-official w3-hover-opacity"></i>
-    <i class="fa fa-instagram w3-hover-opacity"></i>
-    <i class="fa fa-snapchat w3-hover-opacity"></i>
-    <i class="fa fa-pinterest-p w3-hover-opacity"></i>
-    <i class="fa fa-twitter w3-hover-opacity"></i>
-    <i class="fa fa-linkedin w3-hover-opacity"></i>
+    <a href='https://www.facebook.com/igornoava' class="fa fa-facebook-official w3-hover-opacity" target="_blank"></a>
+    <a href='https://www.instagram.com/ionuts_go' class="fa fa-instagram w3-hover-opacity" target="_blank"></a>
+    <a href="" class="fa fa-snapchat w3-hover-opacity" target="_blank"></a>
+    <a href="https://www.pinterest.es/luknaran" class="fa fa-pinterest-p w3-hover-opacity" target="_blank"></a>
+    <a href='https://www.twitter.com/ionuts_go' class="fa fa-twitter w3-hover-opacity" target="_blank"></a>
+    <a href="https://www.linkedin.com/in/andoni-casc%C3%A1n-suarez-00a090165/" class="fa fa-linkedin w3-hover-opacity" target="_blank"></a>
   </div>
 </footer>
 

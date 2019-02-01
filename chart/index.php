@@ -1,7 +1,7 @@
 <?php
 session_start();
 if (!isset($_SESSION['usuario'])) {
-    header('Location: '."login.html");
+    header('Location: '."../logindata.php");
 }
 ?>
 
@@ -33,7 +33,7 @@ body,h1,h2,h3,h4,h5,h6,h7,h8,h9 {font-family: "Raleway", Arial, Helvetica, sans-
       </span><br>
       <a href="#" class="w3-bar-item w3-button"><i class="fa fa-envelope"></i></a>
       <a href="#" class="w3-bar-item w3-button"><i class="fa fa-user"></i></a>
-      <a href="logout.php" class="w3-bar-item w3-button"><i class="fa fa-power-off"></i></a>
+      <a href="../logout.php" class="w3-bar-item w3-button"><i class="fa fa-power-off"></i></a>
     </div>
 </div>
 

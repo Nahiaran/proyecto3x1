@@ -1,3 +1,12 @@
+<?php 
+include ("login.php"); 
+
+if(isset($_SESSION['usuario'])){
+	header("location: index.php");
+	}
+?>
+
+<!DOCTYPE HTML>
 <html>
 <head>
 <title>Proyecto 3x1 - Login</title>
@@ -26,8 +35,11 @@
 				<input type="text" placeholder="Usuario" required name="usuario" required>
 				<input type="password" placeholder="Contraseña" name="pass_usuario" required>
         <input name="submit" type="submit" value="Ingresar"><br><br>
+		<div class="clear"> </div>
+				<span><?php echo $error; ?></span>
         No est&aacutes registrado?
         <a href="registrardata.php" class="text-center">Reg&iacutestrate</a>
+		</div>
 			</form>
 			</div>
 		</div>

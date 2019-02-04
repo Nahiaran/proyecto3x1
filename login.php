@@ -1,21 +1,15 @@
 <?php
 session_start();
-if (!isset($_SESSION['usuario'])) {
-    header('Location: '."logindata.php");
+$error='';
+if (isset($_POST['submit'])) {
+if (empty($_POST['usuario']) || empty($_POST['pass_usuario'])) {
+$error = "Usuario o contraseña incorrecta";
 }
-/*else {
-    require_once 'vendor/autoload.php';
-    $loader = new Twig_Loader_Filesystem('templates');
-    $twig = new Twig_Enviroment($loader);
-
-}*/
-
-// Iniciando sesion
+else
+{
 // Define $username y $password
 $usuario=$_POST['usuario'];
 $pass_usuario=$_POST['pass_usuario'];
-
-$error = "El correo electrónico o la contraseña es inválida.";
 
 include ("conexion.php");
 
@@ -38,5 +32,9 @@ if (password_verify($pass_usuario, $hash)) {
 }
 else {
     // Invalid credentials
-    header('Location: '.'logindata.php');
+    // header('Location: '.'logindata.php');
+    $error = "El correo electrónico o la contraseña es inválida.";
 }
+}
+}
+?>

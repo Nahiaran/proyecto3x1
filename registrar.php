@@ -1,7 +1,8 @@
 <?php
+session_start();
 if(isset($_SESSION['usuario'])){
 	header('location: index.php');
-    }
+	}
 
 $usuario=$_POST["usuario"];
 $contraseña=$_POST["pass_usuario"];

@@ -1,3 +1,8 @@
+<?php
+if(isset($_SESSION['usuario'])){
+	header('location: index.php');
+    }
+?>
 <html>
 <head>
     <title>Proyecto 3x1 - Login</title>

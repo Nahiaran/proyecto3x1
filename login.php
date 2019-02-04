@@ -1,9 +1,12 @@
 <?php
 session_start();
-$error='';
+if(isset($_SESSION['usuario'])){
+	header('location: index.php');
+    }
+$error=''; // Variable para almacenar el mensaje de error
 if (isset($_POST['submit'])) {
 if (empty($_POST['usuario']) || empty($_POST['pass_usuario'])) {
-$error = "Usuario o contraseña incorrecta";
+$error = "Username or Password is invalid";
 }
 else
 {
@@ -26,14 +29,13 @@ $row = mysqli_fetch_array($result, MYSQLI_NUM);
 $hash = $row[0];
 if (password_verify($pass_usuario, $hash)) {
     // Success!
-    session_start();
     $_SESSION['usuario'] = $usuario;
-    header('Location: '."index.php");
+    header('location: index.php');
 }
 else {
     // Invalid credentials
     // header('Location: '.'logindata.php');
-    $error = "El correo electrónico o la contraseña es inválida.";
+    $error = "El usuario o la contraseña son inválidos.";
 }
 }
 }

@@ -99,7 +99,10 @@ AmCharts.makeChart( "chartdiv",
     <a href="https://www.pinterest.es/luknaran" class="fa fa-pinterest-p w3-hover-opacity" target="_blank"></a>
     <a href='https://www.twitter.com/ionuts_go' class="fa fa-twitter w3-hover-opacity" target="_blank"></a>
     <a href="https://www.linkedin.com/in/andoni-casc%C3%A1n-suarez-00a090165/" class="fa fa-linkedin w3-hover-opacity" target="_blank"></a>
-  </div>
+    <br>
+    <p align="center"><iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d710.6017032920709!2d-2.4895689738374682!3d43.17941552214547!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd4e2af11dbef7c1%3A0x20aa700eba1961ca!2sGipuzkoako+Ingeniaritza+Eskola.+Eibarko+atala+-+Escuela+de+Ingenier%C3%ADa+de+Gipuzkoa.+Secci%C3%B3n+Eibar+UPV%2FEHU!5e1!3m2!1ses!2ses!4v1549283901779" width="600" height="450" frameborder="0" style="border:0" allowfullscreen></iframe>
+  
+    </div>
 </footer>
 </body>
 </html>

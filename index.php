@@ -29,7 +29,7 @@ body,h1,h2,h3,h4,h5,h6 {font-family: "Raleway", Arial, Helvetica, sans-serif}
     <div class="w3-col s8 w3-bar w3-right" >
       <span>
           <?php
-          echo "Bienvenido ".$_SESSION["usuario"];
+          echo "Bienvenid@ ".$_SESSION["usuario"];
           ?>
       </span><br>
       <a href="#" class="w3-bar-item w3-button"><i class="fa fa-envelope"></i></a>

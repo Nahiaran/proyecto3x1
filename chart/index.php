@@ -24,7 +24,7 @@ body,h1,h2,h3,h4,h5,h6,h7,h8,h9 {font-family: "Raleway", Arial, Helvetica, sans-
 
 
     <div class="w3-bar w3-white w3-border-bottom w3-xlarge">
-    <img src="img/logo.jpg" alt="tresporuno" width="80" height="80">
+    <img src="images/logo.jpg" alt="tresporuno" width="80" height="80">
     <div class="w3-col s8 w3-bar w3-right" >
       <span>
           <?php

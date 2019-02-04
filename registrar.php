@@ -18,14 +18,13 @@ $email=$_POST["email"];
 
 include ("conexion.php");
 $selectuser = "SELECT * FROM usuarios WHERE usuario='$usuario'";
-$result = mysqli_query($conn, $query);
+$result = mysqli_query($conn, $selectuser);
 $count = mysqli_num_rows($result);
 
 if ($count == 0) {
 	$insert = "INSERT INTO usuarios(usuario, pass_usuario, email) VALUES ('$usuario','$hash', '$email')";
 	//echo $insert;
 	$query = $conn -> query("$insert");
-	header('location: logindata.php');
 }
 else {
 	$error = "El usuario ya existe";

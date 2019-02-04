@@ -24,8 +24,8 @@ body,h1,h2,h3,h4,h5,h6,h7,h8,h9 {font-family: "Raleway", Arial, Helvetica, sans-
 
 
     <div class="w3-bar w3-white w3-border-bottom w3-xlarge">
-    <img src="images/logo.jpg" alt="tresporuno" width="80" height="80" href='../index.php'>
-    <div class="w3-col s8 w3-bar w3-right" >
+    <img src="images/logo.jpg" alt="tresporuno" width="80" height="80" class="w3-left">
+    <div class="w3-col s8 w3-bar w3-left" >
       <span>
           <?php
           echo "Bienvenid@ ".$_SESSION["usuario"];

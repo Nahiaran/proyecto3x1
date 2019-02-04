@@ -1,9 +1,5 @@
 <?php 
 include ("login.php"); 
-
-if(isset($_SESSION['usuario'])){
-	header('location: index.php');
-	}
 ?>
 
 <!DOCTYPE HTML>
@@ -32,13 +28,13 @@ if(isset($_SESSION['usuario'])){
 			<div class="login">
 			<h3>Iniciar sesión</h3>
 			<form action="#" method="post">
-				<input type="text" placeholder="Usuario" required name="usuario" required>
-				<input type="password" placeholder="Contraseña" name="pass_usuario" required>
+				<input type="text" placeholder="Usuario" required name="usuario">
+				<input type="password" placeholder="Contraseña" name="pass_usuario">
         <input name="submit" type="submit" value="Ingresar"><br><br>
 		<div class="clear"> </div>
 				<span><?php echo $error; ?></span>
         <br><br>No est&aacutes registrado?
-        <a href="registrardata.php" class="text-center">Reg&iacutestrate</a>
+        <a href="registrardata.php" class="text-center">Regístrate</a>
 		</div>
 			</form>
 			</div>

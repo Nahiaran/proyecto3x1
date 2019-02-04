@@ -6,7 +6,7 @@ if(isset($_SESSION['usuario'])){
 $error=''; // Variable para almacenar el mensaje de error
 if (isset($_POST['submit'])) {
 if (empty($_POST['usuario']) || empty($_POST['pass_usuario'])) {
-$error = "Username or Password is invalid";
+$error = "Ingrese todos los datos";
 }
 else
 {

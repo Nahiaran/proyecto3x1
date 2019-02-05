@@ -33,14 +33,14 @@ body,h1,h2,h3,h4,h5,h6 {font-family: "Raleway", Arial, Helvetica, sans-serif}
           ?>
       </span><br>
       <a href="index.php" class="w3-bar-item w3-button"><i class="fa fa-home"></i></a>
-      <a href="#" class="w3-bar-item w3-button"><i class="fa fa-user"></i></a>
+      <a href="userinfo.php" class="w3-bar-item w3-button"><i class="fa fa-user"></i></a>
       <a href="logout.php" class="w3-bar-item w3-button"><i class="fa fa-power-off"></i></a>
     </div>
 </div>
 
 <!-- Header -->
 <header class="w3-display-container w3-content w3-hide-small" style="max-width:1500px">
-  <img  src="img/london2.jpg" alt="Londres" width="1500" height="700">
+  <img  src="img/travel.jpg" alt="Londres" width="1500" height="700">
   <div class="w3-display-middle" style="width:65%">
     <div class="w3-bar w3-black">
       <button class="w3-bar-item w3-button tablink" onclick="openLink(event, 'Vuelos');"><i class="fa fa-plane w3-margin-right"></i>Vuelos</button>

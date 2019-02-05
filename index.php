@@ -25,7 +25,7 @@ body,h1,h2,h3,h4,h5,h6 {font-family: "Raleway", Arial, Helvetica, sans-serif}
 
 <!-- Navigation Bar -->
 <div class="w3-bar w3-white w3-border-bottom w3-xlarge">
-    <img src="img/logo.jpg" alt="tresporuno" width="80" height="80" class="w3-left">
+    <img src="img/logo.jpg" alt="tresporuno" width="70" height="80" class="w3-left">
     <div class="w3-col s8 w3-bar w3-left" >
       <span>
           <?php

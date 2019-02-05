@@ -159,7 +159,7 @@ body,h1,h2,h3,h4,h5,h6 {font-family: "Raleway", Arial, Helvetica, sans-serif}
 
   <!-- Contacto -->
   <footer class="w3-container w3-center w3-opacity w3-margin-bottom">
-  <a href="contacto.php"  target="_blank"><h3>Contacto</h3></a>
+  <a href="contacto.php"  target="_blank"><h5>Contacto</h5></a>
 
   <div class="w3-xlarge w3-padding-16">
 

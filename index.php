@@ -1,8 +1,6 @@
 <?php
-session_start();
-if (!isset($_SESSION['usuario'])) {
-    header('Location: '."logindata.php");
-}
+
+include("newsletter.php")
 /*else {
     require_once 'vendor/autoload.php';
     $loader = new Twig_Loader_Filesystem('templates');
@@ -150,9 +148,11 @@ body,h1,h2,h3,h4,h5,h6 {font-family: "Raleway", Arial, Helvetica, sans-serif}
     <div class="w3-panel w3-padding-16 w3-black w3-opacity w3-card w3-hover-opacity-off">
       <h2>Sé el primero en enterarte de las mejores ofertas</h2>
       <p>Únete a nuestra newsletter.</p>
+      <form action="#" method="post">
       <label>E-mail</label>
-      <input class="w3-input w3-border" type="text" placeholder="Tu dirección de Email">
-      <button type="button" class="w3-button w3-red w3-margin-top">Suscríbete</button>
+      <input class="w3-input w3-border" name="email" type="text" placeholder="Tu dirección de Email">
+      <button type="submit" name="news" class="w3-button w3-red w3-margin-top" onclick="window.location.href='newsletter.php'">Suscríbete</button>
+      </form>
     </div>
   </div>
 

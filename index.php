@@ -69,7 +69,7 @@ body,h1,h2,h3,h4,h5,h6 {font-family: "Raleway", Arial, Helvetica, sans-serif}
       <h3>Encuentra los destinos más populares</h3>
       <p>¿Cuales han sido las ciudades más visitadas en 2018?</p>
       <p>Descúbrelo:</p>
-      <p><button class="w3-button w3-dark-grey" onclick="window.location.href='chart/index.php'">Destinos</button></p>
+      <p><button class="w3-button w3-dark-grey" onclick="window.location.href='chart/index.php'">Ciudades</button></p>
     </div>
   </div>
 </header>

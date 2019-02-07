@@ -5,7 +5,7 @@ if(!isset($_SESSION['usuario'])){
 	}
 $error=''; // Variable para almacenar el mensaje de error
 if (isset($_POST['editar'])) {
-if (empty($_POST['pass_vieja']) || empty($_POST['email']) || empty($_POST['pass_nueva'])) {
+if (empty($_POST['pass_vieja']) || empty($_POST['pass_nueva'])) {
 $error = "Debes rellenar todos los campos";
 }
 else

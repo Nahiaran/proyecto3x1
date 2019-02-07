@@ -56,6 +56,8 @@ body,h1,h2,h3,h4,h5,h6 {font-family: "Raleway", Arial, Helvetica, sans-serif}
       </div>
       <p><button class="w3-button w3-dark-grey">Buscar fechas</button></p>
     </div>
+    </div>
+</header>
 
 
 
@@ -67,8 +69,7 @@ body,h1,h2,h3,h4,h5,h6 {font-family: "Raleway", Arial, Helvetica, sans-serif}
 
 
 
-
-<?php
+    <?php
 include("conexion.php");
 
 echo '<form method="POST" ACTION="actualizar2.php">Origen<br>';

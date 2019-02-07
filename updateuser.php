@@ -4,30 +4,34 @@ if(!isset($_SESSION['usuario'])){
 	header('location: logindata.php');
 	}
 $error=''; // Variable para almacenar el mensaje de error
-if (isset($_POST['registrar'])) {
-if (empty($_POST['usuario']) || empty($_POST['pass_usuario']) || empty($_POST['email'])) {
+if (isset($_POST['editar'])) {
+if (empty($_POST['pass_vieja']) || empty($_POST['email']) || empty($_POST['pass_nueva'])) {
 $error = "Debes rellenar todos los campos";
 }
 else
 {
-
-$usuario=$_POST["usuario"];
-$pass_usuario=$_POST["pass_usuario"];
-$hash=password_hash($pass_usuario, PASSWORD_DEFAULT);
+$usuario=$_SESSION["usuario"];
+$pass_nueva=$_POST["pass_nueva"];
+$pass_vieja=$_POST["pass_vieja"];
+$hash_viejo=password_hash($pass_vieja, PASSWORD_DEFAULT);
+$hash_nuevo=password_hash($pass_nueva, PASSWORD_DEFAULT);
 $email=$_POST["email"];
 
+
 include ("conexion.php");
-$selectuser = "SELECT * FROM usuarios WHERE usuario='$usuario'";
-$result = mysqli_query($conn, $selectuser);
+
+$selectpass="SELECT * FROM usuarios WHERE pass_usuario='$hash_viejo'";
+$result = mysqli_query($conn, $selectpass);
 $count = mysqli_num_rows($result);
 
-if ($count == 0) {
-	$insert = "INSERT INTO usuarios(usuario, pass_usuario, email) VALUES ('$usuario','$hash', '$email')";
-	//echo $insert;
-	$query = $conn -> query("$insert");
-}
-else {
-	$error = "El usuario ya existe";
+if($count == 0)
+{
+  $updatepass="UPDATE 'usuarios' SET pass_usuario = $hash_nuevo WHERE 'usuario'= $usuario";
+  $query=$conn->query('$updatepass');
+  }
+else
+{
+ $error = "NOPE";
 }
 }
 }

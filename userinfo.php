@@ -1,5 +1,5 @@
 <?php 
-//include ("login.php"); 
+include ("updateuser.php"); 
 ?>
 <!DOCTYPE HTML>
 <html>
@@ -27,7 +27,10 @@
 			<div class="login">
 			<h3>Iniciar sesión</h3>
 			<form action="#" method="post">
-				<input type="text" placeholder="Usuario" required name="usuario">
+            <?php
+          echo "<a>Usuario: </a>".$_SESSION["usuario"];
+          ?>
+                <input type="text" placeholder="Usuario" required name="usuario">
 				<input type="password" placeholder="Contraseña" name="pass_usuario">
         <input name="submit" type="submit" value="Ingresar"><br><br>
 		<div class="clear"> </div>

@@ -1,5 +1,5 @@
-<?php 
-include ("updateuser.php"); 
+<?php
+include ("updateuser.php");
 ?>
 <!DOCTYPE HTML>
 <html>
@@ -10,7 +10,7 @@ include ("updateuser.php");
 <!-- for-mobile-apps -->
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> 
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="keywords" content="Flat Login Form Widget Responsive, Login form web template, Sign up Web Templates, Flat Web Templates, Login signup Responsive web template, Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, SonyEricsson, Motorola web design" />
 <!-- //for-mobile-apps -->
 <!--Google Fonts-->
@@ -18,26 +18,25 @@ include ("updateuser.php");
 <!--google fonts-->
 </head>
 <body>
-
+//////////////////////////volver index
 
 <h1>Mi Perfil</h1>
 <div class="header agile">
 	<div class="wrap">
 		<div class="login-main wthree">
 			<div class="login">
-			<h3>Iniciar sesión</h3>
+			<h3>Editar usuario</h3>
 			<form action="#" method="post">
             <?php
           echo "<a>Usuario: </a>".$_SESSION["usuario"];
           ?>
-                <input type="text" placeholder="Usuario" required name="usuario">
-				<input type="password" placeholder="Contraseña" name="pass_usuario">
-        <input name="submit" type="submit" value="Ingresar"><br><br>
+                <input type="password" placeholder="Contraseña vieja" required name="pass_vieja">
+				<input type="password" placeholder="Contraseña nueva" name="pass_nueva">
+        <input type="text" placeholder="Email" name="email">
+        <input name="editar" type="submit" value="Editar"><br><br>
 		<div class="clear"> </div>
 				<span><?php echo $error; ?></span>
-        <br><br>No est&aacutes registrado?
-        <a href="registrardata.php" class="text-center">Regístrate</a>
-		</div>
+    </div>
 			</form>
 			</div>
 		</div>

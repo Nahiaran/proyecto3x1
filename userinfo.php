@@ -18,7 +18,7 @@ include ("updateuser.php");
 <!--google fonts-->
 </head>
 <body>
-//////////////////////////volver index
+<!--//////////////////////////volver index-->
 
 <h1>Mi Perfil</h1>
 <div class="header agile">
@@ -30,8 +30,8 @@ include ("updateuser.php");
             <?php
           echo "<a>Usuario: </a>".$_SESSION["usuario"];
           ?>
-                <input type="password" placeholder="Contraseña vieja" required name="pass_vieja">
-				<input type="password" placeholder="Contraseña nueva" name="pass_nueva">
+        <input type="password" placeholder="Contraseña vieja" required name="pass_vieja">
+				<input type="password" placeholder="Contraseña nueva" required name="pass_nueva">
         <input type="text" placeholder="Email" name="email">
         <input name="editar" type="submit" value="Editar"><br><br>
 		<div class="clear"> </div>

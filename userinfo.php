@@ -21,7 +21,7 @@ body,h1,h2,h3,h4,h5,h6 {font-family: "Raleway", Arial, Helvetica, sans-serif}
 .myLink {display: none}
 </style>
 </head>
-<body>
+<body class="w3-light-grey">
 <!--//////////////////////////volver index-->
 <div class="w3-bar w3-white w3-border-bottom w3-xlarge">
     <img src="img/logo.jpg" alt="tresporuno" width="70" height="80" class="w3-left">

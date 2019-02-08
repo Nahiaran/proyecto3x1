@@ -10,17 +10,17 @@ include ("updateuser.php");
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<style>
+body,h1,h2,h3,h4,h5,h6 {font-family: "Raleway", Arial, Helvetica, sans-serif}
+.myLink {display: none}
+</style>
 
 <link href="css/style.css" rel="stylesheet" type="text/css" media="all"/>
 
 <!--Google Fonts-->
 <link href='//fonts.googleapis.com/css?family=Signika:400,600' rel='stylesheet' type='text/css'>
-
-<style>
-body,h1,h2,h3,h4,h5,h6 {font-family: "Raleway", Arial, Helvetica, sans-serif}
-.myLink {display: none}
-</style>
 </head>
+
 <body class="w3-light-grey">
 <!--//////////////////////////volver index-->
 <div class="w3-bar w3-white w3-border-bottom w3-xlarge">

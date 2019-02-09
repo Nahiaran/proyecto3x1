@@ -154,6 +154,7 @@ body,h1,h2,h3,h4,h5,h6 {font-family: "Raleway", Arial, Helvetica, sans-serif}
       <label>E-mail</label>
       <input class="w3-input w3-border" name="email" type="text" placeholder="Tu dirección de Email">
       <button type="submit" name="news" class="w3-button w3-red w3-margin-top" onclick="window.location.href='newsletter.php'">Suscríbete</button>
+      <span><?php echo $success; ?></span>
       <span><?php echo $error; ?></span>
       </form>
     </div>

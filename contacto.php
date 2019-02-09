@@ -33,7 +33,7 @@ body,h1,h2,h3,h4,h5,h6 {font-family: "Raleway", Arial, Helvetica, sans-serif}
           ?>
       </span><br>
       <a href="index.php" class="w3-bar-item w3-button"><i class="fa fa-home"></i></a>
-      <a href="#" class="w3-bar-item w3-button"><i class="fa fa-user"></i></a>
+      <a href="userinfo.php" class="w3-bar-item w3-button"><i class="fa fa-user"></i></a>
       <a href="logout.php" class="w3-bar-item w3-button"><i class="fa fa-power-off"></i></a>
     </div>
 </div>
@@ -49,7 +49,7 @@ body,h1,h2,h3,h4,h5,h6 {font-family: "Raleway", Arial, Helvetica, sans-serif}
   <div class="w3-container">
     <h2>Contacto</h2>
     <p>Permítanos reservar su próximo viaje!</p>
-    <i class="fa fa-map-marker" style="width:30px"></i> Elgoibar, ES<br>
+    <i class="fa fa-map-marker" style="width:30px"></i> Eibar, ES<br>
     <i class="fa fa-phone" style="width:30px"></i> Teléfono: +34 696969696<br>
     <i class="fa fa-envelope" style="width:30px"> </i> Email: info@3x1.com<br>
     <form action="/action_page.php" target="_blank">

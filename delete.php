@@ -10,6 +10,7 @@ $error = "Debes rellenar todos los campos";
 }
 else
 {
+$sesion=$_SESSION['usuario'];
 $usuario=$_POST['usuario'];
 $pass_usuario=$_POST['pass_usuario'];
 
@@ -23,6 +24,7 @@ $row1 = mysqli_fetch_array($result1, MYSQLI_NUM);
 //$row2 = mysqli_fetch_array($result2, MYSQLI_NUM);
 
 $hash = $row1[0];
+if ($sesion == $usuario) {
 if (password_verify($pass_usuario, $hash)) {
   $deleteuser = "DELETE FROM usuarios WHERE usuario='$usuario'";
   $query = $conn->query($deleteuser);
@@ -30,6 +32,10 @@ if (password_verify($pass_usuario, $hash)) {
   }
 else {
   $error = "Los datos no coinciden con nuestra Base de Datos";
+}
+}
+else {
+  $error = "Ese no es tu usuario, pillín";
 }
 }
 }

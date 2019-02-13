@@ -44,6 +44,7 @@ include ("registrar.php");
         <input name="registrar" type="submit" value="Registrarme">
         <div class="clear"> </div>
         <span><?php echo $error; ?></span>
+        <span><?php echo $registered; ?></span>
         <br><br>Ya est&aacutes registrado?
         <a href="logindata.php" class="text-center">Iniciar Sesión</a>
 			</form>

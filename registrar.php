@@ -4,6 +4,7 @@ if(isset($_SESSION['usuario'])){
 	header('location: index.php');
 	}
 $error=''; // Variable para almacenar el mensaje de error
+$registered='';
 if (isset($_POST['registrar'])) {
 if (empty($_POST['usuario']) || empty($_POST['pass_usuario']) || empty($_POST['email'])) {
 $error = "Debes rellenar todos los campos";
@@ -25,6 +26,7 @@ if ($count == 0) {
 	$insert = "INSERT INTO usuarios(usuario, pass_usuario, email) VALUES ('$usuario','$hash', '$email')";
 	//echo $insert;
 	$query = $conn -> query("$insert");
+	$registered = "Usuario registrado con éxito";
 }
 else {
 	$error = "El usuario ya existe";

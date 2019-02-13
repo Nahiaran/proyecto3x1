@@ -1,10 +1,10 @@
 <?php
-include ("updateuser.php");
+include ("delete.php");
 ?>
 <!DOCTYPE HTML>
 <html>
 <head>
-<title>Proyecto 3x1 - Mi Perfil</title>
+<title>Proyecto 3x1 - Eliminar Usuario</title>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
@@ -37,29 +37,20 @@ body,h1,h2,h3,h4,h5,h6 {font-family: "Raleway", Arial, Helvetica, sans-serif}
     </div>
 </div>
 
-<h1>Mi Perfil</h1>
+<h1></h1>
 <div class="header agile">
 	<div class="wrap">
 		<div class="login-main wthree">
 			<div class="login">
-			<h3>Editar usuario</h3>
+			<h3>Eliminar usuario</h3>
 			<form action="#" method="post">
-            <?php
-          echo "<a>Usuario: </a>".$_SESSION["usuario"];
-          ?>
-        <input type="password" placeholder="Contraseña vieja" required name="pass_vieja">
-				<input type="password" placeholder="Contraseña nueva" required name="pass_nueva">
-        <input name="editar" type="submit" value="Editar"><br><br>
+        <input type="text" placeholder="Usuario" required name="usuario">
+        <input type="password" placeholder="Contraseña" required name="pass_usuario">
+        <input name="delete" type="submit" value="Borrar cuenta"><br><br>
 		<div class="clear"> </div>
 				<span><?php echo $error; ?></span>
     </div>
       </form>
-      <div class="login">
-      <form action='deleteuser.php' method='POST'>
-      <input name='delete' type='submit' value='Borrar cuenta'>
-    
-      </form>
-      </div>
 			</div>
 		</div>
 	</div>

@@ -14,7 +14,6 @@ $usuario=$_SESSION['usuario'];
 $pass_nueva=$_POST['pass_nueva'];
 $pass_vieja=$_POST['pass_vieja'];
 $hash_nuevo=password_hash($pass_nueva, PASSWORD_DEFAULT);
-$email=$_POST['email'];
 
 include ("conexion.php");
 

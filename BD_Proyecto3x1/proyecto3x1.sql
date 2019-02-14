@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1:3307
--- Tiempo de generación: 14-02-2019 a las 13:03:39
+-- Tiempo de generación: 14-02-2019 a las 13:21:33
 -- Versión del servidor: 10.1.35-MariaDB
 -- Versión de PHP: 7.2.9
 
@@ -30,7 +30,7 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `ciudades` (
   `nombre` varchar(20) NOT NULL,
-  `visitantes` varchar(20) NOT NULL
+  `visitantes` int(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -38,16 +38,28 @@ CREATE TABLE `ciudades` (
 --
 
 INSERT INTO `ciudades` (`nombre`, `visitantes`) VALUES
-('Hong kong', '29'),
-('Bangkok', '23'),
-('Londres', '20'),
-('Macao', '18'),
-('Singapur', '17'),
-('Paris', '16'),
-('Dubai', '15'),
-('Nueva York', '13'),
-('Kuala Lumpur', '13'),
-('Shenzhen', '12');
+('Hong kong', 29),
+('Bangkok', 23),
+('Londres', 20),
+('Macao', 18),
+('Singapur', 17),
+('Paris', 16),
+('Dubai', 15),
+('Nueva York', 13),
+('Kuala Lumpur', 13),
+('Shenzhen', 12);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `contacto`
+--
+
+CREATE TABLE `contacto` (
+  `Nombre` varchar(20) NOT NULL,
+  `Email` varchar(50) NOT NULL,
+  `Mensaje` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -56,7 +68,7 @@ INSERT INTO `ciudades` (`nombre`, `visitantes`) VALUES
 --
 
 CREATE TABLE `newsletter` (
-  `email` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_spanish_ci NOT NULL
+  `email` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -70,6 +82,13 @@ CREATE TABLE `usuarios` (
   `pass_usuario` varchar(255) NOT NULL,
   `email` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Volcado de datos para la tabla `usuarios`
+--
+
+INSERT INTO `usuarios` (`usuario`, `pass_usuario`, `email`) VALUES
+('Ionut', '$2y$10$AhyrUcpGAKGr9IF0rT1Bu.JYqgWcayeC3XDMgjtKqxsjHcvnN801.', 'ionut@gmail.com');
 
 -- --------------------------------------------------------
 
@@ -188,7 +207,9 @@ INSERT INTO `viajes` (`origen`, `destino`, `fecha`) VALUES
 --
 ALTER TABLE `usuarios`
   ADD PRIMARY KEY (`usuario`),
-  ADD KEY `usuario` (`usuario`,`email`);
+  ADD UNIQUE KEY `email` (`email`),
+  ADD UNIQUE KEY `usuario` (`usuario`),
+  ADD UNIQUE KEY `usuario_2` (`usuario`);
 
 --
 -- Indices de la tabla `viajes`

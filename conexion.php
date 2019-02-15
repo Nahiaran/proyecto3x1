@@ -1,7 +1,7 @@
 <?php
 //conect to mysql (TABLA:users, COLUMNAS:name/password)
 
-$servername = "localhost:3307";
+$servername = "localhost";
 $username = "root";
 $password = "";
 $db = "proyecto3x1";

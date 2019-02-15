@@ -1,6 +1,6 @@
 <?php
 
-$dbhost = 'localhost:3307';
+$dbhost = 'localhost';
 $dbname = 'proyecto3x1';
 $dbuser = 'root';
 $dbpass = '';
